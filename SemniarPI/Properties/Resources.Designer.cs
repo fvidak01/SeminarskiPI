@@ -59,5 +59,41 @@ namespace SemniarPI.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] PIdb {
+            get {
+                object obj = ResourceManager.GetObject("PIdb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --
+        ///-- File generated with SQLiteStudio v3.1.1 on Fri Dec 8 14:35:47 2017
+        ///--
+        ///-- Text encoding used: System
+        ///--
+        ///PRAGMA foreign_keys = off;
+        ///BEGIN TRANSACTION;
+        ///
+        ///-- Table: Kokteli
+        ///CREATE TABLE &quot;Kokteli&quot;
+        ///(
+        ///    K_PK INTEGER PRIMARY KEY AUTOINCREMENT,
+        ///    Ime VARCHAR NOT NULL,
+        ///    Opis VARCHAR,
+        ///    Upute VARCHAR,
+        ///    Slika BLOB
+        ///);
+        ///INSERT INTO Kokteli (K_PK, Ime, Opis, Upute, Slika) VALUES (1, &apos;Kuhano vino&apos;, &apos;Takoder se naziva Glühwein. Ovo pice je popularno u njemackom govornom podrucju, Francuskoj  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string PIexport {
+            get {
+                return ResourceManager.GetString("PIexport", resourceCulture);
+            }
+        }
     }
 }
