@@ -41,7 +41,7 @@ namespace SemniarPI
         public static List<object> SelectAll(Table tablica)
         {
             if (!_isOpen)
-                return null; //TODO: Open connection
+                return null; //TODO: Open connection or throw
             var sqliteCmd = _sqliteConn.CreateCommand();
             switch (tablica)
             {
