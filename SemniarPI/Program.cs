@@ -11,11 +11,13 @@ namespace SemniarPI
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+        public static SettingsObject so;
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            so = new SettingsObject();
             Application.Run(new MainForm());
         }
     }
