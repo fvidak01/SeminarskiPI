@@ -19,7 +19,7 @@ namespace SemniarPI
             var i = 0;
             _id = (long)arr[i++];
             _ime = (string)arr[i++];
-            _napomena = (string)arr[i++];
+            _napomena = arr[i++] is DBNull ? null : (string)arr[i - 1];
             _slika = (byte[])arr[i];
         }
         public string Ime { get => _ime; set => _ime = value; }
