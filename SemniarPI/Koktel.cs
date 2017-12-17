@@ -9,16 +9,18 @@ using System.Threading.Tasks;
 
 namespace SemniarPI
 {
-    class Koktel
+    public class Koktel
     {
-        private string _ime;
-        private string _opis;
-        private string _upute;
-        private byte[] _slika;
+        private readonly long _id;
+        private readonly string _ime;
+        private readonly string _opis;
+        private readonly string _upute;
+        private readonly byte[] _slika;
 
         public Koktel(object[] arr)
         {
             var i = 0;
+            _id = (long)arr[i++];
             _ime = (string)arr[i++];
             _opis = (string)arr[i++];
             _upute = (string)arr[i++];
@@ -35,10 +37,14 @@ namespace SemniarPI
         {
             get
             {
+                if (_slika is null)
+                    return null;
                 var ms = new MemoryStream(_slika);
                 return Image.FromStream(ms);
             }
         }
+
+        public long ID => _id;
 
         public static List<Koktel> CreateKoktailList(List<object[]> rawInput)
         {
