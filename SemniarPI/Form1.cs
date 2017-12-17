@@ -28,8 +28,10 @@ namespace SemniarPI
             sastojci.Add(new object[] { (long)5, null, null, null });
             sastojci.Add(new object[] { (long)6, null, null, null });
             sastojci.Add(new object[] { (long)7, null, null, null });
+            sastojci.Add(new object[] { (long)9, null, null, null });
             var sas = SemniarPI.Sastojci.CreateSastojciList(sastojci);
             var li = DBaccess.GetMyKoktels(sas);
+            var pairs = DBaccess.GetMissingSastojciForKoktelList(li, sas);
             s = koktel[0];
         }
 
