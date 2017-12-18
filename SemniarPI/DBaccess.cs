@@ -135,13 +135,13 @@ namespace SemniarPI
             return myList;
         }
 
-        public static Dictionary<long, List<Sastojci>> GetMissingSastojciForKoktelList(List<Koktel> myKoktels, List<Sastojci> mySastojcis)
+        public static Dictionary<Koktel, List<Sastojci>> GetMissingSastojciForKoktelList(List<Koktel> myKoktels, List<Sastojci> mySastojcis)
         {
             string listQuery = "";
             mySastojcis.ForEach(x => listQuery += x.Id.ToString() + ",");
             listQuery = listQuery.Remove(listQuery.Length - 1);
             string rawQuery = QUERYselectMissingSastojciInMyKoktels;
-            var Pairs = new Dictionary<long, List<Sastojci>>();
+            var Pairs = new Dictionary<Koktel, List<Sastojci>>();
             foreach (var koktel in myKoktels)
             {
                 var newQuery = rawQuery.Replace("<KID>", koktel.ID.ToString()).Replace("<LIST>", listQuery);
@@ -151,7 +151,7 @@ namespace SemniarPI
                     var shit = new Exception("I took a dumb");
                     throw shit; //ha ha look, me funny X)
                 }
-                Pairs.Add(koktel.ID, Sastojci.CreateSastojciList(row));
+                Pairs.Add(koktel, Sastojci.CreateSastojciList(row));
             }
             return Pairs;
         }
