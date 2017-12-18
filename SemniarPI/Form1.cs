@@ -20,16 +20,18 @@ namespace SemniarPI
             DBaccess.DBconnect(new FileInfo("PIdb.db"));
             var list = DBaccess.SelectAll(DBaccess.Table.Kokteli);
             var koktel = Koktel.CreateKoktailList(list);
-            var sastojci = new List<object[]>();
-            sastojci.Add(new object[] { (long)1, null, null, null });
-            sastojci.Add(new object[] { (long)2, null, null, null });
-            sastojci.Add(new object[] { (long)3, null, null, null });
-            sastojci.Add(new object[] { (long)4, null, null, null });
-            sastojci.Add(new object[] { (long)5, null, null, null });
-            sastojci.Add(new object[] { (long)6, null, null, null });
-            sastojci.Add(new object[] { (long)7, null, null, null });
-            sastojci.Add(new object[] { (long)9, null, null, null });
-            var sas = SemniarPI.Sastojci.CreateSastojciList(sastojci);
+            var sastojci = new List<object[]>
+            {
+                new object[] {(long) 1, null, null, null},
+                new object[] {(long) 2, null, null, null},
+                new object[] {(long) 3, null, null, null},
+                new object[] {(long) 4, null, null, null},
+                new object[] {(long) 5, null, null, null},
+                new object[] {(long) 6, null, null, null},
+                new object[] {(long) 7, null, null, null},
+                new object[] {(long) 21, null, null, null}
+            };
+            var sas = Sastojci.CreateSastojciList(sastojci);
             var li = DBaccess.GetMyKoktels(sas);
             var pairs = DBaccess.GetMissingSastojciForKoktelList(li, sas);
             s = koktel[0];
