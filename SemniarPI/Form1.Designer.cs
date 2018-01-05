@@ -61,7 +61,7 @@
             this.metroTabControl1.Location = new System.Drawing.Point(209, 112);
             this.metroTabControl1.Name = "metroTabControl1";
             this.metroTabControl1.SelectedIndex = 1;
-            this.metroTabControl1.Size = new System.Drawing.Size(419, 48);
+            this.metroTabControl1.Size = new System.Drawing.Size(309, 48);
             this.metroTabControl1.Style = MetroFramework.MetroColorStyle.White;
             this.metroTabControl1.TabIndex = 0;
             this.metroTabControl1.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -90,7 +90,7 @@
             this.MojiKokteli.HorizontalScrollbarSize = 10;
             this.MojiKokteli.Location = new System.Drawing.Point(4, 38);
             this.MojiKokteli.Name = "MojiKokteli";
-            this.MojiKokteli.Size = new System.Drawing.Size(411, 6);
+            this.MojiKokteli.Size = new System.Drawing.Size(301, 6);
             this.MojiKokteli.TabIndex = 1;
             this.MojiKokteli.Text = "Moji Kokteli";
             this.MojiKokteli.VerticalScrollbarBarColor = true;
@@ -193,6 +193,7 @@
             this.metroListView1.TabIndex = 6;
             this.metroListView1.UseCompatibleStateImageBehavior = false;
             this.metroListView1.UseSelectable = true;
+            this.metroListView1.View = System.Windows.Forms.View.Details;
             // 
             // metroTextBox1
             // 
@@ -258,9 +259,12 @@
             this.metroLabel4.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroLabel4.UseCustomBackColor = true;
             this.metroLabel4.UseStyleColors = true;
+            this.metroLabel4.Click += new System.EventHandler(this.metroLabel4_Click);
             // 
             // metroContextMenu1
             // 
+            this.metroContextMenu1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.metroContextMenu1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
             this.metroContextMenu1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.metroContextMenu1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveToolStripMenuItem,
