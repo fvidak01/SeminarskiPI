@@ -58,7 +58,7 @@
             this.metroTabControl1.Controls.Add(this.MojiKokteli);
             this.metroTabControl1.Controls.Add(this.SviSastojci);
             this.metroTabControl1.Controls.Add(this.MojiSastojci);
-            this.metroTabControl1.Location = new System.Drawing.Point(209, 112);
+            this.metroTabControl1.Location = new System.Drawing.Point(244, 117);
             this.metroTabControl1.Name = "metroTabControl1";
             this.metroTabControl1.SelectedIndex = 1;
             this.metroTabControl1.Size = new System.Drawing.Size(309, 48);
@@ -128,7 +128,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(443, 187);
+            this.pictureBox1.Location = new System.Drawing.Point(447, 183);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(181, 171);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -144,7 +144,7 @@
             // 
             this.metroLabel1.AutoSize = true;
             this.metroLabel1.FontSize = MetroFramework.MetroLabelSize.Tall;
-            this.metroLabel1.Location = new System.Drawing.Point(23, 60);
+            this.metroLabel1.Location = new System.Drawing.Point(52, 60);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Size = new System.Drawing.Size(75, 25);
             this.metroLabel1.Style = MetroFramework.MetroColorStyle.White;
@@ -158,7 +158,7 @@
             // metroLabel2
             // 
             this.metroLabel2.AutoSize = true;
-            this.metroLabel2.Location = new System.Drawing.Point(484, 394);
+            this.metroLabel2.Location = new System.Drawing.Point(488, 390);
             this.metroLabel2.Name = "metroLabel2";
             this.metroLabel2.Size = new System.Drawing.Size(122, 80);
             this.metroLabel2.Style = MetroFramework.MetroColorStyle.White;
@@ -172,7 +172,7 @@
             // 
             this.metroLabel3.AutoSize = true;
             this.metroLabel3.FontSize = MetroFramework.MetroLabelSize.Tall;
-            this.metroLabel3.Location = new System.Drawing.Point(484, 361);
+            this.metroLabel3.Location = new System.Drawing.Point(488, 357);
             this.metroLabel3.Name = "metroLabel3";
             this.metroLabel3.Size = new System.Drawing.Size(111, 25);
             this.metroLabel3.Style = MetroFramework.MetroColorStyle.White;
@@ -186,7 +186,7 @@
             // 
             this.metroListView1.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.metroListView1.FullRowSelect = true;
-            this.metroListView1.Location = new System.Drawing.Point(150, 187);
+            this.metroListView1.Location = new System.Drawing.Point(154, 183);
             this.metroListView1.Name = "metroListView1";
             this.metroListView1.OwnerDraw = true;
             this.metroListView1.Size = new System.Drawing.Size(233, 171);
@@ -211,7 +211,7 @@
             this.metroTextBox1.CustomButton.Visible = false;
             this.metroTextBox1.Lines = new string[] {
         "Search"};
-            this.metroTextBox1.Location = new System.Drawing.Point(193, 378);
+            this.metroTextBox1.Location = new System.Drawing.Point(197, 374);
             this.metroTextBox1.MaxLength = 32767;
             this.metroTextBox1.Name = "metroTextBox1";
             this.metroTextBox1.PasswordChar = '\0';
@@ -236,7 +236,7 @@
             this.metroComboBox1.ItemHeight = 24;
             this.metroComboBox1.Items.AddRange(new object[] {
             "Column name"});
-            this.metroComboBox1.Location = new System.Drawing.Point(193, 417);
+            this.metroComboBox1.Location = new System.Drawing.Point(197, 413);
             this.metroComboBox1.Name = "metroComboBox1";
             this.metroComboBox1.Size = new System.Drawing.Size(161, 30);
             this.metroComboBox1.Style = MetroFramework.MetroColorStyle.White;
@@ -250,7 +250,7 @@
             this.metroLabel4.AutoSize = true;
             this.metroLabel4.ContextMenuStrip = this.metroContextMenu1;
             this.metroLabel4.FontSize = MetroFramework.MetroLabelSize.Tall;
-            this.metroLabel4.Location = new System.Drawing.Point(125, 60);
+            this.metroLabel4.Location = new System.Drawing.Point(154, 60);
             this.metroLabel4.Name = "metroLabel4";
             this.metroLabel4.Size = new System.Drawing.Size(87, 25);
             this.metroLabel4.Style = MetroFramework.MetroColorStyle.White;
@@ -290,7 +290,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(862, 504);
+            this.ClientSize = new System.Drawing.Size(761, 504);
             this.Controls.Add(this.metroLabel4);
             this.Controls.Add(this.metroComboBox1);
             this.Controls.Add(this.metroTextBox1);
