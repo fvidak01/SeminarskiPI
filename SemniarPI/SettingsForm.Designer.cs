@@ -115,6 +115,7 @@
             this.metroComboBox1.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroComboBox1.UseSelectable = true;
             this.metroComboBox1.UseStyleColors = true;
+            this.metroComboBox1.SelectedIndexChanged += new System.EventHandler(this.metroComboBox1_SelectedIndexChanged);
             // 
             // metroComboBox2
             // 

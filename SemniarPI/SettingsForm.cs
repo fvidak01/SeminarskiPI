@@ -16,5 +16,9 @@ namespace SemniarPI
         {
             InitializeComponent();
         }
+
+        private void metroComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        { 
+        }
     }
 }

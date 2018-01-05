@@ -44,7 +44,7 @@ namespace SemniarPI
                 if (value == _logging)
                     return;
                 _logging = value;
-                this.LoggingSwitched?.Invoke(this, null);
+                LoggingSwitched?.Invoke(this, null);
 
             }
         }
@@ -55,7 +55,7 @@ namespace SemniarPI
             set
             {
                 _theme = value;
-                this.ApperenceChanged?.Invoke(this, null);
+                ApperenceChanged?.Invoke(this, null);
             }
         }
 
@@ -65,7 +65,7 @@ namespace SemniarPI
             set
             {
                 _style = value;
-                this.ApperenceChanged?.Invoke(this, null);
+                ApperenceChanged?.Invoke(this, null);
             }
         }
     }
