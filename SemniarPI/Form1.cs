@@ -11,12 +11,17 @@ namespace SemniarPI
 {
     public partial class MainForm : MetroFramework.Forms.MetroForm
     {
+        private static MainForm me;
         private Koktel s;
-        public MainForm()
+        private MainForm()
         {
             InitializeComponent();
         }
 
+        public static MainForm GetInstance()
+        {
+            return me is null ? new MainForm() : me;
+        }
         private void Form1_Load(object sender, EventArgs e)
         { //Code below is for testing purposes and will be removed TODO: Remove, duuh
             DBaccess.DBconnect(new FileInfo("PIdb.db"));
@@ -43,6 +48,9 @@ namespace SemniarPI
                 this.metroListView1.Items.Add(sa.Key.Ime, sa.Key.Opis);
             }
             s = koktel[0];
+            var tb = li[0].Slika.GetThumbnailImage(80, 80, null, IntPtr.Zero);
+            
+
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -55,6 +63,15 @@ namespace SemniarPI
         {
             var settings = new SettingsForm();
             settings.Show();
+        }
+
+        private void metroLabel4_Click(object sender, EventArgs e)
+        {
+            MetroLabel btnSender = (MetroLabel)sender;
+            Point ptLowerLeft = new Point(0, btnSender.Height);
+            ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
+            this.metroContextMenu1.Show(ptLowerLeft);
+            
         }
 
         /* private void metroLabel1_MouseHover(object sender, EventArgs e)
