@@ -95,5 +95,15 @@ namespace SemniarPI.Properties {
                 return ResourceManager.GetString("PIexport", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap searching {
+            get {
+                object obj = ResourceManager.GetObject("searching", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

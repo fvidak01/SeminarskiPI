@@ -5,18 +5,21 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace SemniarPI
 {
     static class DBaccess
     {
+        #region SQL queries and DB vars
         private const string QUERYselectAllMaxPairs = "SELECT K_FK as KoktelD, COUNT(*) as NumberOfIngridiens FROM Veze GROUP BY(K_FK)";
-
         private const string QUERYselectMyKoktelSastojciPairs =
             "SELECT K_PK,COUNT(*) as Times FROM (SELECT K_PK,Ime,Opis,Upute,Slika FROM Kokteli INNER JOIN Veze V ON Kokteli.K_PK = V.K_FK Where (S_FK in (<LIST>))) GROUP BY K_PK";
         private const string QUERYselectMissingSastojciInMyKoktels = "SELECT S_PK,Ime,Napomena,Slika FROM Sastojci INNER JOIN(SELECT K_FK, S_FK from Veze where K_FK = <KID> EXCEPT SELECT K_FK, S_FK from Veze where S_FK in (<LIST>)) as Mid on S_PK = Mid.S_FK";
         private static bool _isOpen;
         public static int Tolerance = 5; //TODO: Encapsulate this fucker (to gui)
+
         public enum Table
         {
             Kokteli,
@@ -25,7 +28,61 @@ namespace SemniarPI
         }
         // create a new database connection:
         private static SQLiteConnection _sqliteConn;
+        #endregion
 
+        #region DataLists
+
+        private static List<Koktel> focused;
+        #endregion
+        #region Function control variables
+
+        private static bool Setup = false;
+        private static bool SearchRunningSemaphore = false;
+        public static int DelayInterval { get; } = 1000;
+
+        private static System.Windows.Forms.Timer SearchDelayTimer = new System.Windows.Forms.Timer
+        {
+            Interval = DBaccess.DelayInterval,
+        };
+
+        private static void TickMethod(object sender, EventArgs eventArgs)
+        {
+            var s = (System.Windows.Forms.Timer)sender;
+            var p1 = MainForm.GetInstance().SelectedTab;
+            var p2 = MainForm.GetInstance().SelectedFiled;
+            s.Enabled = false;
+            var run = new Task<List<object[]>>(() => DBsearch(p1, p2));
+            run.Start();
+            run.Wait(1000);
+            focused = Koktel.CreateKoktailList(run.Result); //TODO: Select
+            MainForm.GetInstance().SearchingPB.Visible = false;
+        }
+
+        private static List<object[]> DBsearch(MainForm.Tabs selectedTab, string selectedFiled)
+        {
+            List<object[]> res = null;
+            var query = MainForm.GetInstance().SearchQuery;
+            switch (selectedTab)
+            {
+                case MainForm.Tabs.MojiKokteli:
+                    //TODO: Search lists
+                    break;
+                case MainForm.Tabs.MojiSastojci:
+                    //TODO: Search list
+                    break;
+                case MainForm.Tabs.SviSastojci:
+                case MainForm.Tabs.SviKokteli:
+                    //TODO: Search base
+                    string where = selectedFiled + " LIKE '%" + query + "%'";
+                    res = SelectAll(selectedTab == MainForm.Tabs.SviKokteli ? Table.Kokteli : Table.Sastojci, where);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(selectedTab), selectedTab, null);
+            }
+            return res;
+        }
+
+        #endregion
         // open the connection:
         public static bool DBconnect(FileInfo file)
         {
@@ -42,7 +99,7 @@ namespace SemniarPI
             }
             return _isOpen;
         }
-        public static List<object[]> SelectAll(Table tablica)
+        public static List<object[]> SelectAll(Table tablica, string where = null)
         {
             if (!_isOpen)
                 return null; //TODO: Open connection or throw
@@ -60,6 +117,10 @@ namespace SemniarPI
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(tablica), tablica, null); //TODO: not
+            }
+            if (where != null)
+            {
+                sqliteCmd.CommandText = sqliteCmd.CommandText + " WHERE (" + where + ")";
             }
             var reader = sqliteCmd.ExecuteReader();
             var list = new List<object[]>();
@@ -147,12 +208,36 @@ namespace SemniarPI
                 var row = SelectAll(newQuery);
                 if (row is null)
                 {
-                    var shit = new Exception("I took a dumb");
+                    var shit = new Exception("Well, shit");
                     throw shit; //ha ha look, me funny X)
                 }
                 Pairs.Add(koktel, Sastojci.CreateSastojciList(row));
             }
             return Pairs;
+        }
+
+        public static void ResetTimer()
+        {
+            if (!Setup)
+            {
+                SearchDelayTimer.Tick += TickMethod;
+                Setup = !Setup;
+            }
+            //TODO: Check semaphore's work
+            if (SearchRunningSemaphore)
+            {
+                if (SearchDelayTimer.Enabled)
+                    SearchDelayTimer.Stop();
+                return;
+            }
+            SearchDelayTimer.Stop();
+            SearchDelayTimer.Start();
+        }
+
+        public static void DisableTimer()
+        {
+            SearchDelayTimer.Stop();
+            SearchDelayTimer.Enabled = false;
         }
     }
 }
