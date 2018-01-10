@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
+            this.TabsTC = new MetroFramework.Controls.MetroTabControl();
             this.SviKokteli = new MetroFramework.Controls.MetroTabPage();
             this.MojiKokteli = new MetroFramework.Controls.MetroTabPage();
             this.SviSastojci = new MetroFramework.Controls.MetroTabPage();
@@ -40,33 +40,36 @@
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
             this.metroListView1 = new MetroFramework.Controls.MetroListView();
-            this.metroTextBox1 = new MetroFramework.Controls.MetroTextBox();
-            this.metroComboBox1 = new MetroFramework.Controls.MetroComboBox();
+            this.SearchboxTB = new MetroFramework.Controls.MetroTextBox();
+            this.SearchFieldSelectorCB = new MetroFramework.Controls.MetroComboBox();
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
             this.metroContextMenu1 = new MetroFramework.Controls.MetroContextMenu(this.components);
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.metroTabControl1.SuspendLayout();
+            this.SearchingPB = new System.Windows.Forms.PictureBox();
+            this.TabsTC.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.metroContextMenu1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SearchingPB)).BeginInit();
             this.SuspendLayout();
             // 
-            // metroTabControl1
+            // TabsTC
             // 
-            this.metroTabControl1.Controls.Add(this.SviKokteli);
-            this.metroTabControl1.Controls.Add(this.MojiKokteli);
-            this.metroTabControl1.Controls.Add(this.SviSastojci);
-            this.metroTabControl1.Controls.Add(this.MojiSastojci);
-            this.metroTabControl1.Location = new System.Drawing.Point(244, 117);
-            this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 1;
-            this.metroTabControl1.Size = new System.Drawing.Size(309, 48);
-            this.metroTabControl1.Style = MetroFramework.MetroColorStyle.White;
-            this.metroTabControl1.TabIndex = 0;
-            this.metroTabControl1.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroTabControl1.UseSelectable = true;
-            this.metroTabControl1.UseStyleColors = true;
+            this.TabsTC.Controls.Add(this.MojiKokteli);
+            this.TabsTC.Controls.Add(this.SviKokteli);
+            this.TabsTC.Controls.Add(this.SviSastojci);
+            this.TabsTC.Controls.Add(this.MojiSastojci);
+            this.TabsTC.Location = new System.Drawing.Point(244, 117);
+            this.TabsTC.Name = "TabsTC";
+            this.TabsTC.SelectedIndex = 1;
+            this.TabsTC.Size = new System.Drawing.Size(309, 48);
+            this.TabsTC.Style = MetroFramework.MetroColorStyle.White;
+            this.TabsTC.TabIndex = 0;
+            this.TabsTC.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.TabsTC.UseSelectable = true;
+            this.TabsTC.UseStyleColors = true;
+            this.TabsTC.SelectedIndexChanged += new System.EventHandler(this.TabSelectionChanged);
             // 
             // SviKokteli
             // 
@@ -76,7 +79,7 @@
             this.SviKokteli.Location = new System.Drawing.Point(4, 38);
             this.SviKokteli.Name = "SviKokteli";
             this.SviKokteli.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.SviKokteli.Size = new System.Drawing.Size(411, 6);
+            this.SviKokteli.Size = new System.Drawing.Size(301, 6);
             this.SviKokteli.TabIndex = 0;
             this.SviKokteli.Text = "Svi kokteli";
             this.SviKokteli.VerticalScrollbarBarColor = true;
@@ -104,7 +107,7 @@
             this.SviSastojci.HorizontalScrollbarSize = 10;
             this.SviSastojci.Location = new System.Drawing.Point(4, 38);
             this.SviSastojci.Name = "SviSastojci";
-            this.SviSastojci.Size = new System.Drawing.Size(411, 6);
+            this.SviSastojci.Size = new System.Drawing.Size(301, 6);
             this.SviSastojci.TabIndex = 2;
             this.SviSastojci.Text = "Svi sastojci";
             this.SviSastojci.VerticalScrollbarBarColor = true;
@@ -118,7 +121,7 @@
             this.MojiSastojci.HorizontalScrollbarSize = 10;
             this.MojiSastojci.Location = new System.Drawing.Point(4, 38);
             this.MojiSastojci.Name = "MojiSastojci";
-            this.MojiSastojci.Size = new System.Drawing.Size(411, 6);
+            this.MojiSastojci.Size = new System.Drawing.Size(301, 6);
             this.MojiSastojci.TabIndex = 3;
             this.MojiSastojci.Text = "Moji sastojci";
             this.MojiSastojci.UseStyleColors = true;
@@ -195,55 +198,58 @@
             this.metroListView1.UseSelectable = true;
             this.metroListView1.View = System.Windows.Forms.View.Details;
             // 
-            // metroTextBox1
+            // SearchboxTB
             // 
             // 
             // 
             // 
-            this.metroTextBox1.CustomButton.Image = null;
-            this.metroTextBox1.CustomButton.Location = new System.Drawing.Point(139, 1);
-            this.metroTextBox1.CustomButton.Name = "";
-            this.metroTextBox1.CustomButton.Size = new System.Drawing.Size(21, 21);
-            this.metroTextBox1.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
-            this.metroTextBox1.CustomButton.TabIndex = 1;
-            this.metroTextBox1.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
-            this.metroTextBox1.CustomButton.UseSelectable = true;
-            this.metroTextBox1.CustomButton.Visible = false;
-            this.metroTextBox1.Lines = new string[] {
+            this.SearchboxTB.CustomButton.Image = null;
+            this.SearchboxTB.CustomButton.Location = new System.Drawing.Point(139, 1);
+            this.SearchboxTB.CustomButton.Name = "";
+            this.SearchboxTB.CustomButton.Size = new System.Drawing.Size(21, 21);
+            this.SearchboxTB.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.SearchboxTB.CustomButton.TabIndex = 1;
+            this.SearchboxTB.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.SearchboxTB.CustomButton.UseSelectable = true;
+            this.SearchboxTB.CustomButton.Visible = false;
+            this.SearchboxTB.Lines = new string[] {
         "Search"};
-            this.metroTextBox1.Location = new System.Drawing.Point(197, 374);
-            this.metroTextBox1.MaxLength = 32767;
-            this.metroTextBox1.Name = "metroTextBox1";
-            this.metroTextBox1.PasswordChar = '\0';
-            this.metroTextBox1.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.metroTextBox1.SelectedText = "";
-            this.metroTextBox1.SelectionLength = 0;
-            this.metroTextBox1.SelectionStart = 0;
-            this.metroTextBox1.ShortcutsEnabled = true;
-            this.metroTextBox1.Size = new System.Drawing.Size(161, 23);
-            this.metroTextBox1.Style = MetroFramework.MetroColorStyle.White;
-            this.metroTextBox1.TabIndex = 7;
-            this.metroTextBox1.Text = "Search";
-            this.metroTextBox1.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroTextBox1.UseSelectable = true;
-            this.metroTextBox1.UseStyleColors = true;
-            this.metroTextBox1.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
-            this.metroTextBox1.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
+            this.SearchboxTB.Location = new System.Drawing.Point(197, 374);
+            this.SearchboxTB.MaxLength = 32767;
+            this.SearchboxTB.Name = "SearchboxTB";
+            this.SearchboxTB.PasswordChar = '\0';
+            this.SearchboxTB.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.SearchboxTB.SelectedText = "";
+            this.SearchboxTB.SelectionLength = 0;
+            this.SearchboxTB.SelectionStart = 0;
+            this.SearchboxTB.ShortcutsEnabled = true;
+            this.SearchboxTB.Size = new System.Drawing.Size(161, 23);
+            this.SearchboxTB.Style = MetroFramework.MetroColorStyle.White;
+            this.SearchboxTB.TabIndex = 7;
+            this.SearchboxTB.Text = "Search";
+            this.SearchboxTB.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.SearchboxTB.UseSelectable = true;
+            this.SearchboxTB.UseStyleColors = true;
+            this.SearchboxTB.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
+            this.SearchboxTB.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
+            this.SearchboxTB.TextChanged += new System.EventHandler(this.OnSearchTextChanged);
             // 
-            // metroComboBox1
+            // SearchFieldSelectorCB
             // 
-            this.metroComboBox1.FormattingEnabled = true;
-            this.metroComboBox1.ItemHeight = 24;
-            this.metroComboBox1.Items.AddRange(new object[] {
-            "Column name"});
-            this.metroComboBox1.Location = new System.Drawing.Point(197, 413);
-            this.metroComboBox1.Name = "metroComboBox1";
-            this.metroComboBox1.Size = new System.Drawing.Size(161, 30);
-            this.metroComboBox1.Style = MetroFramework.MetroColorStyle.White;
-            this.metroComboBox1.TabIndex = 8;
-            this.metroComboBox1.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroComboBox1.UseSelectable = true;
-            this.metroComboBox1.UseStyleColors = true;
+            this.SearchFieldSelectorCB.FormattingEnabled = true;
+            this.SearchFieldSelectorCB.ItemHeight = 24;
+            this.SearchFieldSelectorCB.Items.AddRange(new object[] {
+            "Ime",
+            "Opis",
+            "Upute"});
+            this.SearchFieldSelectorCB.Location = new System.Drawing.Point(197, 413);
+            this.SearchFieldSelectorCB.Name = "SearchFieldSelectorCB";
+            this.SearchFieldSelectorCB.Size = new System.Drawing.Size(161, 30);
+            this.SearchFieldSelectorCB.Style = MetroFramework.MetroColorStyle.White;
+            this.SearchFieldSelectorCB.TabIndex = 8;
+            this.SearchFieldSelectorCB.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.SearchFieldSelectorCB.UseSelectable = true;
+            this.SearchFieldSelectorCB.UseStyleColors = true;
             // 
             // metroLabel4
             // 
@@ -286,20 +292,33 @@
             this.loadToolStripMenuItem.Size = new System.Drawing.Size(111, 24);
             this.loadToolStripMenuItem.Text = "Load";
             // 
+            // SearchingPB
+            // 
+            this.SearchingPB.ErrorImage = global::SemniarPI.Properties.Resources.searching;
+            this.SearchingPB.Image = global::SemniarPI.Properties.Resources.searching;
+            this.SearchingPB.Location = new System.Drawing.Point(364, 374);
+            this.SearchingPB.Name = "SearchingPB";
+            this.SearchingPB.Size = new System.Drawing.Size(23, 23);
+            this.SearchingPB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.SearchingPB.TabIndex = 10;
+            this.SearchingPB.TabStop = false;
+            this.SearchingPB.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(761, 504);
+            this.Controls.Add(this.SearchingPB);
             this.Controls.Add(this.metroLabel4);
-            this.Controls.Add(this.metroComboBox1);
-            this.Controls.Add(this.metroTextBox1);
+            this.Controls.Add(this.SearchFieldSelectorCB);
+            this.Controls.Add(this.SearchboxTB);
             this.Controls.Add(this.metroListView1);
             this.Controls.Add(this.metroLabel3);
             this.Controls.Add(this.metroLabel2);
             this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.metroTabControl1);
+            this.Controls.Add(this.TabsTC);
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Style = MetroFramework.MetroColorStyle.White;
@@ -307,10 +326,11 @@
             this.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.metroTabControl1.ResumeLayout(false);
+            this.TabsTC.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
             this.metroContextMenu1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.SearchingPB)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -318,7 +338,7 @@
 
         #endregion
 
-        private MetroFramework.Controls.MetroTabControl metroTabControl1;
+        private MetroFramework.Controls.MetroTabControl TabsTC;
         private MetroFramework.Controls.MetroTabPage SviKokteli;
         private MetroFramework.Controls.MetroTabPage MojiKokteli;
         private MetroFramework.Controls.MetroTabPage SviSastojci;
@@ -328,13 +348,14 @@
         private MetroFramework.Controls.MetroLabel metroLabel1;
         private MetroFramework.Controls.MetroLabel metroLabel3;
         private MetroFramework.Controls.MetroLabel metroLabel2;
-        private MetroFramework.Controls.MetroComboBox metroComboBox1;
-        private MetroFramework.Controls.MetroTextBox metroTextBox1;
+        private MetroFramework.Controls.MetroComboBox SearchFieldSelectorCB;
+        private MetroFramework.Controls.MetroTextBox SearchboxTB;
         private MetroFramework.Controls.MetroListView metroListView1;
         private MetroFramework.Controls.MetroLabel metroLabel4;
         private MetroFramework.Controls.MetroContextMenu metroContextMenu1;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
+        public System.Windows.Forms.PictureBox SearchingPB;
     }
 }
 
