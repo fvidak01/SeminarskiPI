@@ -1,31 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using static SemniarPI.Program;
 namespace SemniarPI
 {
     public static class MyLogger
     {
-        private static Thread LogLoop;
-        private static LinkedList<LogObject> LogQue = new LinkedList<LogObject>();
-        private static bool run;
-        private static int autoExit = 0;
+        private static Thread _logLoop;
+        private static LinkedList<LogObject> _logQue = new LinkedList<LogObject>();
+        private static bool _run;
+        private static int _autoExit;
         public enum LogType
         {
             Error,
             Warning,
             Info
-        };
-        private static string LogPath;
+        }
+        private static string _logPath;
         static MyLogger()
         {
             if (!so.EnableLogging)
                 return;
-            run = true;
+            _run = true;
             Directory.CreateDirectory("Logs");
-            LogPath = Path.GetFullPath("Logs");
+            _logPath = Path.GetFullPath("Logs");
             so.LoggingSwitched += OnLoggingSwitched;
             Start();
         }
@@ -45,68 +44,68 @@ namespace SemniarPI
 
         private static void Start()
         {
-            if (run)
+            if (_run)
                 return;
-            if (LogLoop.IsAlive)
+            if (_logLoop.IsAlive)
             {
-                if (!LogLoop.Join(200))
+                if (!_logLoop.Join(200))
                     throw new Exception("Dafaq....lel"); //=> Should not happen!
             }
-            LogLoop = new Thread(WriteLog);
-            LogLoop.Start();
+            _logLoop = new Thread(WriteLog);
+            _logLoop.Start();
         }
 
-        public static bool IsRunning => run;
+        public static bool IsRunning => _run;
 
         public static void CallStaticConstructor()
         {
-            run.Equals(null); //gr8 m8 i r8 str8 8/8 no h8
+            _run.Equals(null); //gr8 m8 i r8 str8 8/8 no h8
         }
         private class LogObject
         {
-            public Type t;
-            public string s;
-            public LogType lt;
+            public Type T;
+            public string S;
+            public LogType Lt;
             public LogObject(Type t, string s, LogType lt)
             {
-                this.s = s;
-                this.t = t;
-                this.lt = lt;
+                S = s;
+                T = t;
+                Lt = lt;
             }
         }
         public static void Log(Type t, string s, LogType lt = LogType.Info)
         {
             if (!so.EnableLogging)
                 return;
-            LogQue.AddLast(new LogObject(t, s, lt));
+            _logQue.AddLast(new LogObject(t, s, lt));
             Start();
         }
 
         private static void WriteLog()
         {
-            autoExit = 0;
-            while (run)
+            _autoExit = 0;
+            while (_run)
             {
-                if (LogQue.Count == 0)
+                if (_logQue.Count == 0)
                 {
                     Thread.Sleep(100);
-                    if (autoExit++ > 10) //TODO: Add confg limit
+                    if (_autoExit++ > 10) //TODO: Add confg limit
                     {
-                        run = false;
+                        _run = false;
                     }
                     continue;
 
                 }
-                var o = LogQue.First;
+                var o = _logQue.First;
                 var timeStamp = DateTime.Now.ToLocalTime().ToShortDateString();
                 var val = o.Value;
-                if (!File.Exists(LogPath + @"\" + val.t.Name + ".txt"))
-                    File.Create(LogPath + @"\" + val.t.Name + ".txt").Close();
+                if (!File.Exists(_logPath + @"\" + val.T.Name + ".txt"))
+                    File.Create(_logPath + @"\" + val.T.Name + ".txt").Close();
                 try
                 {
-                    using (var w = new StreamWriter(LogPath + @"\" + val.t.Name + ".txt", true))
+                    using (var w = new StreamWriter(_logPath + @"\" + val.T.Name + ".txt", true))
                     {
-                        w.WriteLine("[" + timeStamp + "]" + "<" + val.lt + ">" + val.s);
+                        w.WriteLine("[" + timeStamp + "]" + "<" + val.Lt + ">" + val.S);
                         w.Close();
                         w.Dispose();
                     }
@@ -116,13 +115,13 @@ namespace SemniarPI
                     Thread.Sleep(100);
                     continue;
                 }
-                LogQue.RemoveFirst();
+                _logQue.RemoveFirst();
             }
         }
         public static void Stop()
         {
-            run = false;
-            LogQue.Clear();
+            _run = false;
+            _logQue.Clear();
         }
     }
 }

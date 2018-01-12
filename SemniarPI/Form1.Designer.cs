@@ -1,11 +1,16 @@
-﻿namespace SemniarPI
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using MetroFramework.Components;
+using MetroFramework.Controls;
+
+namespace SemniarPI
 {
     partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -338,24 +343,24 @@
 
         #endregion
 
-        private MetroFramework.Controls.MetroTabControl TabsTC;
-        private MetroFramework.Controls.MetroTabPage SviKokteli;
-        private MetroFramework.Controls.MetroTabPage MojiKokteli;
-        private MetroFramework.Controls.MetroTabPage SviSastojci;
-        private MetroFramework.Controls.MetroTabPage MojiSastojci;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private MetroFramework.Components.MetroStyleManager metroStyleManager1;
-        private MetroFramework.Controls.MetroLabel metroLabel1;
-        private MetroFramework.Controls.MetroLabel metroLabel3;
-        private MetroFramework.Controls.MetroLabel metroLabel2;
-        private MetroFramework.Controls.MetroComboBox SearchFieldSelectorCB;
-        private MetroFramework.Controls.MetroTextBox SearchboxTB;
-        private MetroFramework.Controls.MetroListView metroListView1;
-        private MetroFramework.Controls.MetroLabel metroLabel4;
-        private MetroFramework.Controls.MetroContextMenu metroContextMenu1;
-        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
-        public System.Windows.Forms.PictureBox SearchingPB;
+        private MetroTabControl TabsTC;
+        private MetroTabPage SviKokteli;
+        private MetroTabPage MojiKokteli;
+        private MetroTabPage SviSastojci;
+        private MetroTabPage MojiSastojci;
+        private PictureBox pictureBox1;
+        private MetroStyleManager metroStyleManager1;
+        private MetroLabel metroLabel1;
+        private MetroLabel metroLabel3;
+        private MetroLabel metroLabel2;
+        private MetroComboBox SearchFieldSelectorCB;
+        private MetroTextBox SearchboxTB;
+        private MetroListView metroListView1;
+        private MetroLabel metroLabel4;
+        private MetroContextMenu metroContextMenu1;
+        private ToolStripMenuItem saveToolStripMenuItem;
+        private ToolStripMenuItem loadToolStripMenuItem;
+        public PictureBox SearchingPB;
     }
 }
 
