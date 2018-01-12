@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Data;
 using System.Data.SQLite;
 using System.IO;
-using System.Threading;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SemniarPI
@@ -13,10 +11,10 @@ namespace SemniarPI
     static class DBaccess
     {
         #region SQL queries and DB vars
-        private const string QUERYselectAllMaxPairs = "SELECT K_FK as KoktelD, COUNT(*) as NumberOfIngridiens FROM Veze GROUP BY(K_FK)";
-        private const string QUERYselectMyKoktelSastojciPairs =
+        private const string QuerYselectAllMaxPairs = "SELECT K_FK as KoktelD, COUNT(*) as NumberOfIngridiens FROM Veze GROUP BY(K_FK)";
+        private const string QuerYselectMyKoktelSastojciPairs =
             "SELECT K_PK,COUNT(*) as Times FROM (SELECT K_PK,Ime,Opis,Upute,Slika FROM Kokteli INNER JOIN Veze V ON Kokteli.K_PK = V.K_FK Where (S_FK in (<LIST>))) GROUP BY K_PK";
-        private const string QUERYselectMissingSastojciInMyKoktels = "SELECT S_PK,Ime,Napomena,Slika FROM Sastojci INNER JOIN(SELECT K_FK, S_FK from Veze where K_FK = <KID> EXCEPT SELECT K_FK, S_FK from Veze where S_FK in (<LIST>)) as Mid on S_PK = Mid.S_FK";
+        private const string QuerYselectMissingSastojciInMyKoktels = "SELECT S_PK,Ime,Napomena,Slika FROM Sastojci INNER JOIN(SELECT K_FK, S_FK from Veze where K_FK = <KID> EXCEPT SELECT K_FK, S_FK from Veze where S_FK in (<LIST>)) as Mid on S_PK = Mid.S_FK";
         private static bool _isOpen;
         public static int Tolerance = 5; //TODO: Encapsulate this fucker (to gui)
 
@@ -32,29 +30,29 @@ namespace SemniarPI
 
         #region DataLists
 
-        private static List<Koktel> focused;
+        private static List<Koktel> _focused;
         #endregion
         #region Function control variables
 
-        private static bool Setup = false;
-        private static bool SearchRunningSemaphore = false;
+        private static bool _setup;
+        private static bool _searchRunningSemaphore = false;
         public static int DelayInterval { get; } = 1000;
 
-        private static System.Windows.Forms.Timer SearchDelayTimer = new System.Windows.Forms.Timer
+        private static Timer _searchDelayTimer = new Timer
         {
-            Interval = DBaccess.DelayInterval,
+            Interval = DelayInterval
         };
 
         private static void TickMethod(object sender, EventArgs eventArgs)
         {
-            var s = (System.Windows.Forms.Timer)sender;
+            var s = (Timer)sender;
             var p1 = MainForm.GetInstance().SelectedTab;
             var p2 = MainForm.GetInstance().SelectedFiled;
             s.Enabled = false;
             var run = new Task<List<object[]>>(() => DBsearch(p1, p2));
             run.Start();
             run.Wait(1000);
-            focused = Koktel.CreateKoktailList(run.Result); //TODO: Select
+            _focused = Koktel.CreateKoktailList(run.Result); //TODO: Select
             MainForm.GetInstance().SearchingPB.Visible = false;
         }
 
@@ -157,19 +155,19 @@ namespace SemniarPI
         public static List<Koktel> GetMyKoktels(List<Sastojci> mySastojcis)
         {
             //Get number of ing for each coctail
-            List<int[]> KoktelSastocjiNumberPairs = GetTwoIntPairs(QUERYselectAllMaxPairs);
+            List<int[]> koktelSastocjiNumberPairs = GetTwoIntPairs(QuerYselectAllMaxPairs);
             //Get number of ing contained in each Koktel based on inputed mySastojci in 3 steps
             //1) Get PK from mySastojci objects
             var listQuery = "";
             mySastojcis.ForEach(x => listQuery += x.Id.ToString() + ",");
             listQuery = listQuery.Remove(listQuery.Length - 1);
-            List<int[]> MyKoktelSastocjiNumberPairs = GetTwoIntPairs(QUERYselectMyKoktelSastojciPairs.Replace("<LIST>", listQuery));
+            List<int[]> myKoktelSastocjiNumberPairs = GetTwoIntPairs(QuerYselectMyKoktelSastojciPairs.Replace("<LIST>", listQuery));
             //2) Compare the two and get valid Koktels relative to Tolerance; TODO: Add <real> tolerance n shit
             var theChosenOnes = new List<int>();
-            foreach (var o in KoktelSastocjiNumberPairs)
+            foreach (var o in koktelSastocjiNumberPairs)
             {
                 var thePair = new int[2];
-                if ((thePair = MyKoktelSastocjiNumberPairs.FirstOrDefault(x => x[0] == o[0])) == null)
+                if ((thePair = myKoktelSastocjiNumberPairs.FirstOrDefault(x => x[0] == o[0])) == null)
                     continue;
                 //Add to final list
                 if (o[1] - thePair[1] <= Tolerance) //0->Tolerance, in this case 0 TODO: Create <real> tolerance field
@@ -200,8 +198,8 @@ namespace SemniarPI
             string listQuery = "";
             mySastojcis.ForEach(x => listQuery += x.Id.ToString() + ",");
             listQuery = listQuery.Remove(listQuery.Length - 1);
-            string rawQuery = QUERYselectMissingSastojciInMyKoktels;
-            var Pairs = new Dictionary<Koktel, List<Sastojci>>();
+            string rawQuery = QuerYselectMissingSastojciInMyKoktels;
+            var pairs = new Dictionary<Koktel, List<Sastojci>>();
             foreach (var koktel in myKoktels)
             {
                 var newQuery = rawQuery.Replace("<KID>", koktel.ID.ToString()).Replace("<LIST>", listQuery);
@@ -211,33 +209,33 @@ namespace SemniarPI
                     var shit = new Exception("Well, shit");
                     throw shit; //ha ha look, me funny X)
                 }
-                Pairs.Add(koktel, Sastojci.CreateSastojciList(row));
+                pairs.Add(koktel, Sastojci.CreateSastojciList(row));
             }
-            return Pairs;
+            return pairs;
         }
 
         public static void ResetTimer()
         {
-            if (!Setup)
+            if (!_setup)
             {
-                SearchDelayTimer.Tick += TickMethod;
-                Setup = !Setup;
+                _searchDelayTimer.Tick += TickMethod;
+                _setup = !_setup;
             }
             //TODO: Check semaphore's work
-            if (SearchRunningSemaphore)
+            if (_searchRunningSemaphore)
             {
-                if (SearchDelayTimer.Enabled)
-                    SearchDelayTimer.Stop();
+                if (_searchDelayTimer.Enabled)
+                    _searchDelayTimer.Stop();
                 return;
             }
-            SearchDelayTimer.Stop();
-            SearchDelayTimer.Start();
+            _searchDelayTimer.Stop();
+            _searchDelayTimer.Start();
         }
 
         public static void DisableTimer()
         {
-            SearchDelayTimer.Stop();
-            SearchDelayTimer.Enabled = false;
+            _searchDelayTimer.Stop();
+            _searchDelayTimer.Enabled = false;
         }
     }
 }

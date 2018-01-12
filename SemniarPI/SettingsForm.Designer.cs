@@ -1,11 +1,14 @@
-﻿namespace SemniarPI
+﻿using System.ComponentModel;
+using MetroFramework.Controls;
+
+namespace SemniarPI
 {
     partial class SettingsForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -204,15 +207,15 @@
 
         #endregion
 
-        private MetroFramework.Controls.MetroLabel LBtheme;
-        private MetroFramework.Controls.MetroLabel LBstyle;
-        private MetroFramework.Controls.MetroLabel metroLabel1;
-        private MetroFramework.Controls.MetroButton metroButton1;
-        private MetroFramework.Controls.MetroButton metroButton2;
-        private MetroFramework.Controls.MetroComboBox metroComboBox1;
-        private MetroFramework.Controls.MetroComboBox metroComboBox2;
-        private MetroFramework.Controls.MetroButton metroButton3;
-        private MetroFramework.Controls.MetroLabel metroLabel2;
-        private MetroFramework.Controls.MetroComboBox metroComboBox3;
+        private MetroLabel LBtheme;
+        private MetroLabel LBstyle;
+        private MetroLabel metroLabel1;
+        private MetroButton metroButton1;
+        private MetroButton metroButton2;
+        private MetroComboBox metroComboBox1;
+        private MetroComboBox metroComboBox2;
+        private MetroButton metroButton3;
+        private MetroLabel metroLabel2;
+        private MetroComboBox metroComboBox3;
     }
 }

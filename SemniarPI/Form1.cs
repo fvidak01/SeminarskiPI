@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Windows.Forms;
-using MetroFramework;
 using MetroFramework.Controls;
+using MetroFramework.Forms;
 
 namespace SemniarPI
 
 {
-    public partial class MainForm : MetroFramework.Forms.MetroForm
+    public partial class MainForm : MetroForm
     {
         public string SearchQuery;
-        private static MainForm me;
-        private Koktel s; //TODO: Delete
+        private static MainForm _me;
+        private Koktel _s; //TODO: Delete
 
         public enum Tabs
         {
@@ -22,7 +21,7 @@ namespace SemniarPI
             SviKokteli = 0,
             MojiSastojci = 3,
             SviSastojci = 2
-        };
+        }
 
         private static Tabs _selectedTab;
 
@@ -49,16 +48,17 @@ namespace SemniarPI
 
         public static MainForm GetInstance()
         {
-            if (me is null)
+            if (_me is null)
             {
-                me = new MainForm();
+                _me = new MainForm();
             }
-            return me;
+            return _me;
         }
         private void Form1_Load(object sender, EventArgs e)
         { //Code below is for testing purposes and will be removed TODO: Remove, duuh
             SearchFieldSelectorCB.SelectedIndex = 0;
             DBaccess.DBconnect(new FileInfo("PIdb.db"));
+            metroListView1.View = View.Details;
             var list = DBaccess.SelectAll(DBaccess.Table.Kokteli);
             var koktel = Koktel.CreateKoktailList(list);
             var sastojci = new List<object[]>
@@ -69,19 +69,19 @@ namespace SemniarPI
                 new object[] {(long) 4, null, null, null},
                 new object[] {(long) 5, null, null, null},
                 new object[] {(long) 6, null, null, null},
-                new object[] {(long) 7, null, null, null},
+                new object[] {(long) 7, null, null, null}
             };
             var sas = Sastojci.CreateSastojciList(sastojci);
             var li = DBaccess.GetMyKoktels(sas);
             var pairs = DBaccess.GetMissingSastojciForKoktelList(li, sas);
-            this.metroListView1.Columns.Add("Ime");
-            this.metroListView1.Columns.Add("Opis");
-            this.metroListView1.View = View.List;
+            metroListView1.Columns.Add("Ime");
+            metroListView1.Columns.Add("Opis");
+            metroListView1.View = View.List;
             foreach (var sa in pairs)
             {
-                this.metroListView1.Items.Add(sa.Key.Ime, sa.Key.Opis);
+                metroListView1.Items.Add(sa.Key.Ime, sa.Key.Opis);
             }
-            s = koktel[0];
+            _s = koktel[0];
             var tb = li[0].Slika.GetThumbnailImage(80, 80, null, IntPtr.Zero);
 
 
@@ -90,7 +90,7 @@ namespace SemniarPI
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             var b = (PictureBox)sender;
-            b.Image = s.Slika;
+            b.Image = _s.Slika;
         }
 
         private void metroLabel1_Click(object sender, EventArgs e)
@@ -104,7 +104,7 @@ namespace SemniarPI
             MetroLabel btnSender = (MetroLabel)sender;
             Point ptLowerLeft = new Point(0, btnSender.Height);
             ptLowerLeft = btnSender.PointToScreen(ptLowerLeft);
-            this.metroContextMenu1.Show(ptLowerLeft);
+            metroContextMenu1.Show(ptLowerLeft);
 
         }
 
