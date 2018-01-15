@@ -10,8 +10,27 @@ namespace SemniarPI
 {
     static class DBaccess
     {
+        #region Data lists
+
+        public static Dictionary<Koktel,List<Sastojci>> MyKoktels
+        {
+            get => GetFullSastojciKoktelPars(GetMyKoktels(MySastojcis));
+        }
+        public static List<Sastojci> MySastojcis = new List<Sastojci>();
+        public static List<object> SearchResults;
+        public static List<Koktel> AllKoktels
+        {
+            get => Koktel.CreateKoktailList(SelectAll(Table.Kokteli));
+        }
+        public static List<Sastojci> AllSastojci
+        {
+            get => Sastojci.CreateSastojciList(SelectAll(Table.Sastojci));
+        }
+        #endregion
+
         #region SQL queries and DB vars
         private const string QuerYselectAllMaxPairs = "SELECT K_FK as KoktelD, COUNT(*) as NumberOfIngridiens FROM Veze GROUP BY(K_FK)";
+        private const string QuerySelectAllSastojiForKoktel = "SELECT Ime,Napomena,Slika FROM Sastojci INNER JOIN Veze V ON Sastojci.S_PK = V.S_FK WHERE V.K_FK == <value>";
         private const string QuerYselectMyKoktelSastojciPairs =
             "SELECT K_PK,COUNT(*) as Times FROM (SELECT K_PK,Ime,Opis,Upute,Slika FROM Kokteli INNER JOIN Veze V ON Kokteli.K_PK = V.K_FK Where (S_FK in (<LIST>))) GROUP BY K_PK";
         private const string QuerYselectMissingSastojciInMyKoktels = "SELECT S_PK,Ime,Napomena,Slika FROM Sastojci INNER JOIN(SELECT K_FK, S_FK from Veze where K_FK = <KID> EXCEPT SELECT K_FK, S_FK from Veze where S_FK in (<LIST>)) as Mid on S_PK = Mid.S_FK";
@@ -28,10 +47,6 @@ namespace SemniarPI
         private static SQLiteConnection _sqliteConn;
         #endregion
 
-        #region DataLists
-
-        private static List<Koktel> _focused;
-        #endregion
         #region Function control variables
 
         private static bool _setup;
@@ -52,7 +67,7 @@ namespace SemniarPI
             var run = new Task<List<object[]>>(() => DBsearch(p1, p2));
             run.Start();
             run.Wait(1000);
-            _focused = Koktel.CreateKoktailList(run.Result); //TODO: Select
+            //_focused = Koktel.CreateKoktailList(run.Result); //TODO: Select
             MainForm.GetInstance().SearchingPB.Visible = false;
         }
 
@@ -154,6 +169,8 @@ namespace SemniarPI
 
         public static List<Koktel> GetMyKoktels(List<Sastojci> mySastojcis)
         {
+            if (mySastojcis is null || mySastojcis.Count == 0)
+                return null;
             //Get number of ing for each coctail
             List<int[]> koktelSastocjiNumberPairs = GetTwoIntPairs(QuerYselectAllMaxPairs);
             //Get number of ing contained in each Koktel based on inputed mySastojci in 3 steps
@@ -213,7 +230,18 @@ namespace SemniarPI
             }
             return pairs;
         }
-
+        public static Dictionary<Koktel, List<Sastojci>> GetFullSastojciKoktelPars(List<Koktel> k)
+        {
+            if (k is null)
+                return null;
+            var dic = new Dictionary<Koktel, List<Sastojci>>();
+            foreach (var item in k)
+            {
+                var sastojci = Sastojci.CreateSastojciList(SelectAll(QuerySelectAllSastojiForKoktel.Replace("<value>", item.ID.ToString())));
+                dic.Add(item, sastojci);
+            }
+            return dic;
+        }
         public static void ResetTimer()
         {
             if (!_setup)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using MetroFramework.Controls;
 using MetroFramework.Forms;
@@ -14,7 +15,6 @@ namespace SemniarPI
         public string SearchQuery;
         private static MainForm _me;
         private Koktel _s; //TODO: Delete
-
         public enum Tabs
         {
             MojiKokteli = 1,
@@ -56,11 +56,10 @@ namespace SemniarPI
         }
         private void Form1_Load(object sender, EventArgs e)
         { //Code below is for testing purposes and will be removed TODO: Remove, duuh
-            SearchFieldSelectorCB.SelectedIndex = 0;
+            TabsTC.SizeMode = TabSizeMode.Fixed;
+            this.GridView.RowTemplate.Height = 40;
             DBaccess.DBconnect(new FileInfo("PIdb.db"));
-            metroListView1.View = View.Details;
-            var list = DBaccess.SelectAll(DBaccess.Table.Kokteli);
-            var koktel = Koktel.CreateKoktailList(list);
+            TabSelectionChanged(TabsTC, null);
             var sastojci = new List<object[]>
             {
                 new object[] {(long) 1, null, null, null},
@@ -71,28 +70,14 @@ namespace SemniarPI
                 new object[] {(long) 6, null, null, null},
                 new object[] {(long) 7, null, null, null}
             };
-            var sas = Sastojci.CreateSastojciList(sastojci);
-            var li = DBaccess.GetMyKoktels(sas);
-            var pairs = DBaccess.GetMissingSastojciForKoktelList(li, sas);
-            metroListView1.Columns.Add("Ime");
-            metroListView1.Columns.Add("Opis");
-            metroListView1.View = View.List;
-            foreach (var sa in pairs)
+            var st = new DataGridViewCellStyle()
             {
-                metroListView1.Items.Add(sa.Key.Ime, sa.Key.Opis);
-            }
-            _s = koktel[0];
-            var tb = li[0].Slika.GetThumbnailImage(80, 80, null, IntPtr.Zero);
-
-
+                WrapMode = DataGridViewTriState.True,
+                Alignment = DataGridViewContentAlignment.MiddleLeft,
+                Padding = new Padding(2, 5, 2, 5)
+            };
+            GridView.DefaultCellStyle = st;
         }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-            var b = (PictureBox)sender;
-            b.Image = _s.Slika;
-        }
-
         private void metroLabel1_Click(object sender, EventArgs e)
         {
             var settings = new SettingsForm();
@@ -132,22 +117,68 @@ namespace SemniarPI
                     SearchFieldSelectorCB.Items.Clear();
                     SearchFieldSelectorCB.Items.AddRange(new object[] { "Ime", "Opis", "Upute" });
                     SearchFieldSelectorCB.SelectedIndex = 0;
+                    GridView.Columns.Clear();
+                    GridView.Columns.Add(new DataGridViewImageColumn { HeaderText = "", Width = 35,Resizable = DataGridViewTriState.False, ImageLayout = DataGridViewImageCellLayout.Stretch });
+                    GridView.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Ime", Width = 75, Resizable = DataGridViewTriState.False });
+                    GridView.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Opis", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill, Resizable = DataGridViewTriState.False });
+                    if (SelectedTab == Tabs.MojiKokteli)
+                        Populate(DBaccess.MyKoktels);
+                    else
+                        Populate(DBaccess.AllKoktels);
                     break;
                 case Tabs.MojiSastojci:
                 case Tabs.SviSastojci:
                     SearchFieldSelectorCB.Items.Clear();
                     SearchFieldSelectorCB.Items.AddRange(new object[] { "Ime", "Napomena" });
                     SearchFieldSelectorCB.SelectedIndex = 0;
+                    GridView.Columns.Clear();
+                    GridView.Columns.Add(new DataGridViewImageColumn { HeaderText = "", Width = 35, Resizable = DataGridViewTriState.False, ImageLayout = DataGridViewImageCellLayout.Stretch });
+                    GridView.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Ime", Width = 75, Resizable = DataGridViewTriState.False });
+                    GridView.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Napomena", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill, Resizable = DataGridViewTriState.False });
+                    if (SelectedTab == Tabs.MojiSastojci)
+                        Populate(DBaccess.MySastojcis);
+                    else
+                        Populate(DBaccess.AllSastojci);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(); //TODO: Handle
             }
+            /* private void metroLabel1_MouseHover(object sender, EventArgs e)
+             {
+                 var s = (MetroLabel)sender;
+                 s.BackColor = Color.DarkSlateBlue;
+             }*/
         }
 
-        /* private void metroLabel1_MouseHover(object sender, EventArgs e)
-         {
-             var s = (MetroLabel)sender;
-             s.BackColor = Color.DarkSlateBlue;
-         }*/
+        private void Populate(object list)
+        {
+            if (list is null)
+                return;
+            switch (SelectedTab)
+            {
+                case Tabs.MojiKokteli:
+                    var obj = (Dictionary<Koktel, List<Sastojci>>)list;
+                    foreach (var item in obj)
+                    {
+                        GridView.Rows.Add(new object[] { item.Key.Slika.GetThumbnailImage(40, 40, null, IntPtr.Zero), item.Key.Ime, item.Key.Opis });
+                    }
+                    break;
+                case Tabs.SviKokteli:
+                    var ob = (List<Koktel>)list;
+                    foreach (var item in ob)
+                    {
+                        GridView.Rows.Add(new object[] { item.Slika.GetThumbnailImage(40, 40, null, IntPtr.Zero), item.Ime, item.Opis });
+                    }
+                    break;
+                case Tabs.SviSastojci:
+                case Tabs.MojiSastojci:
+                    var o = (List<Sastojci>)list;
+                    foreach (var item in o)
+                    {
+                        GridView.Rows.Add(new object[] { item.Slika.GetThumbnailImage(40, 40, null, IntPtr.Zero), item.Ime, item.Napomena});
+                    }
+                    break;
+            }
+        }
     }
 }
