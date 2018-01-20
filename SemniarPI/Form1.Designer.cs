@@ -173,10 +173,10 @@ namespace SemniarPI
             this.metroLabel1.FontSize = MetroFramework.MetroLabelSize.Tall;
             this.metroLabel1.Location = new System.Drawing.Point(52, 60);
             this.metroLabel1.Name = "metroLabel1";
-            this.metroLabel1.Size = new System.Drawing.Size(75, 25);
+            this.metroLabel1.Size = new System.Drawing.Size(81, 25);
             this.metroLabel1.Style = MetroFramework.MetroColorStyle.White;
             this.metroLabel1.TabIndex = 2;
-            this.metroLabel1.Text = "Settings";
+            this.metroLabel1.Text = "Postavke";
             this.metroLabel1.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroLabel1.UseCustomBackColor = true;
             this.metroLabel1.UseStyleColors = true;
@@ -224,7 +224,7 @@ namespace SemniarPI
             this.SearchboxTB.CustomButton.UseSelectable = true;
             this.SearchboxTB.CustomButton.Visible = false;
             this.SearchboxTB.Lines = new string[] {
-        "Search"};
+        "Pretraži"};
             this.SearchboxTB.Location = new System.Drawing.Point(197, 447);
             this.SearchboxTB.MaxLength = 32767;
             this.SearchboxTB.Name = "SearchboxTB";
@@ -237,7 +237,7 @@ namespace SemniarPI
             this.SearchboxTB.Size = new System.Drawing.Size(161, 23);
             this.SearchboxTB.Style = MetroFramework.MetroColorStyle.White;
             this.SearchboxTB.TabIndex = 7;
-            this.SearchboxTB.Text = "Search";
+            this.SearchboxTB.Text = "Pretraži";
             this.SearchboxTB.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.SearchboxTB.UseSelectable = true;
             this.SearchboxTB.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
@@ -268,10 +268,10 @@ namespace SemniarPI
             this.metroLabel4.FontSize = MetroFramework.MetroLabelSize.Tall;
             this.metroLabel4.Location = new System.Drawing.Point(154, 60);
             this.metroLabel4.Name = "metroLabel4";
-            this.metroLabel4.Size = new System.Drawing.Size(87, 25);
+            this.metroLabel4.Size = new System.Drawing.Size(143, 25);
             this.metroLabel4.Style = MetroFramework.MetroColorStyle.White;
             this.metroLabel4.TabIndex = 9;
-            this.metroLabel4.Text = "User data";
+            this.metroLabel4.Text = "Korisnički podaci";
             this.metroLabel4.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroLabel4.UseCustomBackColor = true;
             this.metroLabel4.UseStyleColors = true;
@@ -286,21 +286,21 @@ namespace SemniarPI
             this.saveToolStripMenuItem,
             this.loadToolStripMenuItem});
             this.metroContextMenu1.Name = "metroContextMenu1";
-            this.metroContextMenu1.Size = new System.Drawing.Size(112, 52);
+            this.metroContextMenu1.Size = new System.Drawing.Size(126, 52);
             this.metroContextMenu1.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroContextMenu1.UseStyleColors = true;
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(111, 24);
-            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(125, 24);
+            this.saveToolStripMenuItem.Text = "Spremi";
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(111, 24);
-            this.loadToolStripMenuItem.Text = "Load";
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(125, 24);
+            this.loadToolStripMenuItem.Text = "Učitaj";
             // 
             // SearchingPB
             // 

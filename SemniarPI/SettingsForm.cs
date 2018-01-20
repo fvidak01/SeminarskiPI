@@ -13,5 +13,10 @@ namespace SemniarPI
         private void metroComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
         }
+
+        private void LBtheme_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
