@@ -205,7 +205,7 @@ namespace SemniarPI
             Font myFont = new Font("Arial", 12, FontStyle.Bold);
             //I'm rolling smoothly 
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            //https://goo.gl/DBvmfy
+            //https://ci.memecdn.com/8799486.jpg
             gp.AddString("Kuhano vino", FontFamily.GenericSansSerif, (int)FontStyle.Bold, 18, new Point((int)(s.Width / 2 - e.Graphics.MeasureString("Kuhano vino", myFont).Width / 2) +15, s.Height - 25), null);
             e.Graphics.DrawPath(Pens.Black, gp);
             e.Graphics.FillPath(Brushes.White, gp);
@@ -247,7 +247,7 @@ namespace SemniarPI
                     var enm = GridView.SelectedRows.GetEnumerator();
                     while (enm.MoveNext())
                     {
-                        var temp = DBaccess.AllSastojci.FirstOrDefault(x => ((DataGridViewRow)(enm.Current)).Cells[1].Value.Equals(x.Ime));
+                        var temp =(Sastojci) DBaccess.BindRowToItem(((DataGridViewRow)(enm.Current)), SelectedTab);
                         if (temp is null)
                             throw new Exception("Fuck me"); //Should not happen
                         DBaccess.MySastojcis.Add(temp);
@@ -265,12 +265,12 @@ namespace SemniarPI
                     var enm = GridView.SelectedRows.GetEnumerator();
                     while (enm.MoveNext())
                     {
-                        var temp = DBaccess.AllSastojci.FirstOrDefault(x => ((DataGridViewRow)(enm.Current)).Cells[1].Value.Equals(x.Ime));
+                        var temp = (Sastojci)DBaccess.BindRowToItem(((DataGridViewRow)(enm.Current)), SelectedTab);
                         if (temp is null)
                             throw new Exception("Fuck me"); //Should not happen
                         try
                         {
-                            DBaccess.MySastojcis.RemoveAt(DBaccess.MySastojcis.IndexOf(DBaccess.MySastojcis.First(x => x.Id == temp.Id))); //Remove won't fucking work....
+                            DBaccess.MySastojcis.Remove(DBaccess.MySastojcis.First(x => x.Id == temp.Id)); //Remove not working, THIS is a fix
                         }
                         catch (InvalidOperationException)
                         {
@@ -278,7 +278,7 @@ namespace SemniarPI
                         }
                         catch (Exception ex)
                         {
-
+                            MessageBox.Show("Error: Ex: " + ex.Message + "Inner: "+ex.InnerException?.Message);
                         }
                         
                         ((DataGridViewRow)(enm.Current)).DefaultCellStyle.BackColor = Color.White; //TODO: FIX according to style
@@ -289,13 +289,14 @@ namespace SemniarPI
                 {
                     foreach (DataGridViewRow row in GridView.SelectedRows)
                     {
-                        var a = DBaccess.AllSastojci.First(x => x.Ime.Equals(row.Cells[1].Value));
-                        int i = 0;
-                        for (i = 0; i < DBaccess.AllSastojci.Count; i++) //IndexOf won't fucking work....
+                        int i;
+                        var a = (Sastojci)DBaccess.BindRowToItem(row, SelectedTab);
+                        //Fuck index of, stup PoS
+                        for (i = 0; i < DBaccess.AllSastojci.Count; i++)
                             if (DBaccess.AllSastojci[i].Id == a.Id)
                                 break;
                         trackList[i] = false;
-                        DBaccess.MySastojcis.Remove(DBaccess.MySastojcis.FirstOrDefault(x => x.Ime.Equals(row.Cells[1].Value)));
+                        DBaccess.MySastojcis.Remove(((Sastojci)DBaccess.BindRowToItem(row,SelectedTab)));
                         GridView.Rows.Remove(row);
                     }
                 }
