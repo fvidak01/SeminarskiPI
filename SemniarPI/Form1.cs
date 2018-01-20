@@ -270,7 +270,7 @@ namespace SemniarPI
                             throw new Exception("Fuck me"); //Should not happen
                         try
                         {
-                            DBaccess.MySastojcis.Remove(DBaccess.MySastojcis.First(x => x.Id == temp.Id)); //Remove not working, THIS is a fix
+                            DBaccess.MySastojcis.Remove(DBaccess.MySastojcis.First(x => x.Id == temp.Id)); //Remove() not working, THIS is a fix
                         }
                         catch (InvalidOperationException)
                         {
@@ -301,6 +301,11 @@ namespace SemniarPI
                     }
                 }
             }
+        }
+
+        private void OnDoubleClick(object sender, EventArgs e) //Same as ENTER keypress, shall forward the call
+        {
+            OnKeyDown(GridView, new KeyEventArgs(Keys.Enter));
         }
     }
 }

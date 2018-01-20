@@ -355,6 +355,7 @@ namespace SemniarPI
             this.GridView.UseStyleColors = true;
             this.GridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GridView_CellContentClick);
             this.GridView.SelectionChanged += new System.EventHandler(this.OnSelection);
+            this.GridView.DoubleClick += new System.EventHandler(this.OnDoubleClick);
             this.GridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnKeyDown);
             // 
             // koktelBindingSource
