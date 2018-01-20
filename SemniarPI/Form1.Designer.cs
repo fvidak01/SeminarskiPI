@@ -34,6 +34,7 @@ namespace SemniarPI
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -46,7 +47,6 @@ namespace SemniarPI
             this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
-            this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
             this.SearchboxTB = new MetroFramework.Controls.MetroTextBox();
             this.SearchFieldSelectorCB = new MetroFramework.Controls.MetroComboBox();
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
@@ -156,12 +156,14 @@ namespace SemniarPI
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(518, 171);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(276, 259);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.OnPaint);
             // 
             // metroStyleManager1
             // 
@@ -194,20 +196,6 @@ namespace SemniarPI
             this.metroLabel2.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroLabel2.UseCustomBackColor = true;
             this.metroLabel2.UseStyleColors = true;
-            // 
-            // metroLabel3
-            // 
-            this.metroLabel3.AutoSize = true;
-            this.metroLabel3.FontSize = MetroFramework.MetroLabelSize.Tall;
-            this.metroLabel3.Location = new System.Drawing.Point(592, 440);
-            this.metroLabel3.Name = "metroLabel3";
-            this.metroLabel3.Size = new System.Drawing.Size(111, 25);
-            this.metroLabel3.Style = MetroFramework.MetroColorStyle.White;
-            this.metroLabel3.TabIndex = 5;
-            this.metroLabel3.Text = "Kuhano vino";
-            this.metroLabel3.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroLabel3.UseCustomBackColor = true;
-            this.metroLabel3.UseStyleColors = true;
             // 
             // SearchboxTB
             // 
@@ -361,10 +349,13 @@ namespace SemniarPI
             this.GridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.GridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.GridView.ShowRowErrors = false;
-            this.GridView.Size = new System.Drawing.Size(342, 239);
+            this.GridView.Size = new System.Drawing.Size(342, 259);
             this.GridView.TabIndex = 11;
             this.GridView.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.GridView.UseStyleColors = true;
+            this.GridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GridView_CellContentClick);
+            this.GridView.SelectionChanged += new System.EventHandler(this.OnSelection);
+            this.GridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnKeyDown);
             // 
             // koktelBindingSource
             // 
@@ -374,13 +365,12 @@ namespace SemniarPI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(894, 598);
+            this.ClientSize = new System.Drawing.Size(948, 637);
             this.Controls.Add(this.GridView);
             this.Controls.Add(this.SearchingPB);
             this.Controls.Add(this.metroLabel4);
             this.Controls.Add(this.SearchFieldSelectorCB);
             this.Controls.Add(this.SearchboxTB);
-            this.Controls.Add(this.metroLabel3);
             this.Controls.Add(this.metroLabel2);
             this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.pictureBox1);
@@ -414,7 +404,6 @@ namespace SemniarPI
         private PictureBox pictureBox1;
         private MetroStyleManager metroStyleManager1;
         private MetroLabel metroLabel1;
-        private MetroLabel metroLabel3;
         private MetroLabel metroLabel2;
         private MetroComboBox SearchFieldSelectorCB;
         private MetroTextBox SearchboxTB;
