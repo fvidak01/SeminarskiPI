@@ -11,16 +11,26 @@ namespace SemniarPI
     static class DBaccess
     {
         #region Data lists
-
         public static Dictionary<Koktel,List<Sastojci>> MyKoktels
         {
             get => GetFullSastojciKoktelPars(GetMyKoktels(MySastojcis));
         }
         public static List<Sastojci> MySastojcis = new List<Sastojci>();
         public static List<object> SearchResults;
+        private static List<Koktel> _allKoktels;
         public static List<Koktel> AllKoktels
         {
-            get => Koktel.CreateKoktailList(SelectAll(Table.Kokteli));
+            get
+            {
+                _allKoktels = _allKoktels is null ? Koktel.CreateKoktailList(SelectAll(Table.Kokteli)) : _allKoktels;
+                return _allKoktels;
+            }
+            set
+            {
+                _allKoktels = null;
+                var shit = AllKoktels;
+            }
+
         }
         public static List<Sastojci> AllSastojci
         {
@@ -264,6 +274,20 @@ namespace SemniarPI
         {
             _searchDelayTimer.Stop();
             _searchDelayTimer.Enabled = false;
+        }
+        public static object BindRowToItem(DataGridViewRow var, object list, MainForm.Tabs tab)
+        {
+            switch (tab)
+            {
+                case MainForm.Tabs.MojiKokteli:
+                    break;
+                case MainForm.Tabs.SviKokteli:
+                    break;
+                case MainForm.Tabs.MojiSastojci:
+                    break;
+                case MainForm.Tabs.SviSastojci:
+                    break;
+            }
         }
     }
 }
