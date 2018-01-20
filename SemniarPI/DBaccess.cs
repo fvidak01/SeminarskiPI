@@ -275,19 +275,22 @@ namespace SemniarPI
             _searchDelayTimer.Stop();
             _searchDelayTimer.Enabled = false;
         }
-        public static object BindRowToItem(DataGridViewRow var, object list, MainForm.Tabs tab)
+        public static object BindRowToItem(DataGridViewRow row, MainForm.Tabs tab)
         {
             switch (tab)
             {
                 case MainForm.Tabs.MojiKokteli:
-                    break;
+                    return MyKoktels.ElementAt(row.Index);
                 case MainForm.Tabs.SviKokteli:
-                    break;
+                    return AllKoktels[row.Index];
                 case MainForm.Tabs.MojiSastojci:
-                    break;
+                    return MySastojcis[row.Index];
                 case MainForm.Tabs.SviSastojci:
-                    break;
+                    return AllSastojci[row.Index];
+                default:
+                    return null;
             }
+
         }
     }
 }
