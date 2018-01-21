@@ -305,7 +305,7 @@ namespace SemniarPI
 
         private void OnDoubleClick(object sender, EventArgs e) //Same as ENTER keypress, shall forward the call
         {
-            OnKeyDown(GridView, new KeyEventArgs(Keys.Enter));
+            OnKeyDown(sender, new KeyEventArgs(Keys.Enter));
         }
     }
 }
