@@ -13,11 +13,12 @@ namespace SemniarPI
         #region Data lists
         public static Dictionary<Koktel,List<Sastojci>> MyKoktels
         {
-            get => GetFullSastojciKoktelPars(GetMyKoktels(MySastojcis));
+            get => GetMissingSastojciForKoktelList(GetMyKoktels(MySastojcis),MySastojcis);
         }
         public static List<Sastojci> MySastojcis = new List<Sastojci>();
         public static List<object> SearchResults;
         private static List<Koktel> _allKoktels;
+        private static Dictionary<Koktel, List<Sastojci>> _allKoktelsFull;
         public static List<Koktel> AllKoktels
         {
             get
@@ -36,11 +37,18 @@ namespace SemniarPI
         {
             get => Sastojci.CreateSastojciList(SelectAll(Table.Sastojci));
         }
+        public static Dictionary<Koktel, List<Sastojci>> AllKoktelsFull
+        {
+            get
+            {
+                return _allKoktelsFull is null ? GetFullSastojciKoktelPars(AllKoktels) : _allKoktelsFull;
+            }
+        }
         #endregion
 
         #region SQL queries and DB vars
         private const string QuerYselectAllMaxPairs = "SELECT K_FK as KoktelD, COUNT(*) as NumberOfIngridiens FROM Veze GROUP BY(K_FK)";
-        private const string QuerySelectAllSastojiForKoktel = "SELECT Ime,Napomena,Slika FROM Sastojci INNER JOIN Veze V ON Sastojci.S_PK = V.S_FK WHERE V.K_FK == <value>";
+        private const string QuerySelectAllSastojiForKoktel = "SELECT S_PK,Ime,Napomena,Slika FROM Sastojci INNER JOIN Veze V ON Sastojci.S_PK = V.S_FK WHERE V.K_FK == <value>";
         private const string QuerYselectMyKoktelSastojciPairs =
             "SELECT K_PK,COUNT(*) as Times FROM (SELECT K_PK,Ime,Opis,Upute,Slika FROM Kokteli INNER JOIN Veze V ON Kokteli.K_PK = V.K_FK Where (S_FK in (<LIST>))) GROUP BY K_PK";
         private const string QuerYselectMissingSastojciInMyKoktels = "SELECT S_PK,Ime,Napomena,Slika FROM Sastojci INNER JOIN(SELECT K_FK, S_FK from Veze where K_FK = <KID> EXCEPT SELECT K_FK, S_FK from Veze where S_FK in (<LIST>)) as Mid on S_PK = Mid.S_FK";
@@ -222,6 +230,8 @@ namespace SemniarPI
 
         public static Dictionary<Koktel, List<Sastojci>> GetMissingSastojciForKoktelList(List<Koktel> myKoktels, List<Sastojci> mySastojcis)
         {
+            if (MySastojcis is null || MySastojcis.Count < 1)
+                return null;
             string listQuery = "";
             mySastojcis.ForEach(x => listQuery += x.Id.ToString() + ",");
             listQuery = listQuery.Remove(listQuery.Length - 1);
@@ -275,15 +285,23 @@ namespace SemniarPI
             _searchDelayTimer.Stop();
             _searchDelayTimer.Enabled = false;
         }
-        public static object BindRowToItem(DataGridViewRow row, MainForm.Tabs tab)
+        public static object BindRowToItem(DataGridViewRow row, MainForm.Tabs tab, bool pairs = false,bool link = false)
         {
             switch (tab)
             {
                 case MainForm.Tabs.MojiKokteli:
+                    if (MyKoktels is null)
+                        return null;
                     return MyKoktels.ElementAt(row.Index);
                 case MainForm.Tabs.SviKokteli:
-                    return AllKoktels[row.Index];
+                    if (pairs && link)
+                    {
+                        return AllKoktelsFull.FirstOrDefault(x => x.Key.Ime.Equals(row.Cells[1].Value.ToString()));
+                    }
+                    return pairs ? (object)AllKoktelsFull.ElementAt(row.Index) : AllKoktels.First(x => x.Ime.Equals(row.Cells[1].Value.ToString()));
                 case MainForm.Tabs.MojiSastojci:
+                    if (MySastojcis is null)
+                        return null;
                     return MySastojcis[row.Index];
                 case MainForm.Tabs.SviSastojci:
                     return AllSastojci[row.Index];

@@ -194,6 +194,7 @@ namespace SemniarPI
         private void OnPaint(object sender, PaintEventArgs e)
         {
             var s = (PictureBox)sender;
+            var txt = GridView.SelectedRows[0].Cells[1].Value.ToString();
             /* using (Font myFont = new Font("Arial", 12,FontStyle.Bold)) -> Why bother kek
              {
                  e.Graphics.DrawString("Kuhano vino", myFont, Brushes.White, new Point((int)(s.Width/2 - e.Graphics.MeasureString("Kuhano vino", myFont).Width/2), s.Height - 25));
@@ -206,7 +207,7 @@ namespace SemniarPI
             //I'm rolling smoothly 
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             //https://ci.memecdn.com/8799486.jpg
-            gp.AddString("Kuhano vino", FontFamily.GenericSansSerif, (int)FontStyle.Bold, 18, new Point((int)(s.Width / 2 - e.Graphics.MeasureString("Kuhano vino", myFont).Width / 2) +15, s.Height - 25), null);
+            gp.AddString(txt, FontFamily.GenericSansSerif, (int)FontStyle.Bold, 18, new Point((int)(s.Width / 2 - e.Graphics.MeasureString("Kuhano vino", myFont).Width / 2) +15, s.Height - 25), null);
             e.Graphics.DrawPath(Pens.Black, gp);
             e.Graphics.FillPath(Brushes.White, gp);
             //You hatti'n nigga?
@@ -218,22 +219,48 @@ namespace SemniarPI
         {
             var s = (MetroGrid)sender;
             //var sp = 
+            if (s.SelectedRows.Count > 1)
+                return;
+            if (s.SelectedRows.Count < 1)
+                return;
             switch (SelectedTab)
             {
                 case Tabs.MojiKokteli:
-                    break;
                 case Tabs.SviKokteli:
+                    this.NedSasLB.ForeColor = Color.Red;
+                    var obj = DBaccess.BindRowToItem(s.SelectedRows[0], Tabs.SviKokteli, pairs:true, link:SelectedTab == Tabs.MojiKokteli);
+                    this.sastojciLB.Text = "";
+                    this.NedSasLB.Text = "";
+                    var o = (KeyValuePair<Koktel, List<Sastojci>>)obj;
+                    o.Value.ForEach(x => this.sastojciLB.Text += x.Ime.ToString() + ", ");
+                    sastojciLB.Text = sastojciLB.Text.Remove(sastojciLB.Text.Length - 2);
+                    var op = DBaccess.BindRowToItem(s.SelectedRows[0], Tabs.MojiKokteli);
+                    pictureBox1.Image = o.Key.Slika;
+                    if (op is null)
+                    {
+                        this.NedSasLB.Text = sastojciLB.Text.Replace("Sastojci:", "").TrimStart();
+                        return;
+                    }
+                    ((KeyValuePair<Koktel,List<Sastojci>>)op).Value.ForEach(x => this.NedSasLB.Text += x.Ime + ", ");
+                    if (((KeyValuePair<Koktel, List<Sastojci>>)op).Value.Count == 0)
+                    {
+                        this.NedSasLB.Text = "Imate sve!  ";
+                        this.NedSasLB.ForeColor = Color.LightGreen;
+                    }
+                    this.NedSasLB.Text = NedSasLB.Text.Remove(NedSasLB.Text.Length - 2);
+                    this.sviSastTXTLB.Show();
+                    this.NedostajeLB.Show();
                     break;
                 case Tabs.MojiSastojci:
-                    break;
                 case Tabs.SviSastojci:
+                    var sas = (Sastojci)DBaccess.BindRowToItem(s.SelectedRows[0], SelectedTab);
+                    this.pictureBox1.Image = sas.Slika;
+                    this.NedSasLB.Text = "";
+                    this.sastojciLB.Text = "";
+                    this.sviSastTXTLB.Hide();
+                    this.NedostajeLB.Hide();
                     break;
             }
-        }
-
-        private void GridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
@@ -270,7 +297,7 @@ namespace SemniarPI
                             throw new Exception("Fuck me"); //Should not happen
                         try
                         {
-                            DBaccess.MySastojcis.Remove(DBaccess.MySastojcis.First(x => x.Id == temp.Id)); //Remove not working, THIS is a fix
+                            DBaccess.MySastojcis.Remove(DBaccess.MySastojcis.First(x => x.Id == temp.Id)); //Remove() not working, THIS is a fix
                         }
                         catch (InvalidOperationException)
                         {
@@ -301,6 +328,11 @@ namespace SemniarPI
                     }
                 }
             }
+        }
+
+        private void OnDoubleClick(object sender, EventArgs e) //Same as ENTER keypress, shall forward the call
+        {
+            OnKeyDown(sender, new KeyEventArgs(Keys.Enter));
         }
     }
 }
