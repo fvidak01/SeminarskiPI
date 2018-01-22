@@ -46,7 +46,7 @@ namespace SemniarPI
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
-            this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
+            this.InsctrLB = new MetroFramework.Controls.MetroLabel();
             this.SearchboxTB = new MetroFramework.Controls.MetroTextBox();
             this.SearchFieldSelectorCB = new MetroFramework.Controls.MetroComboBox();
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
@@ -55,6 +55,10 @@ namespace SemniarPI
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SearchingPB = new System.Windows.Forms.PictureBox();
             this.GridView = new MetroFramework.Controls.MetroGrid();
+            this.sviSastTXTLB = new MetroFramework.Controls.MetroLabel();
+            this.NedostajeLB = new MetroFramework.Controls.MetroLabel();
+            this.NedSasLB = new MetroFramework.Controls.MetroLabel();
+            this.sastojciLB = new MetroFramework.Controls.MetroLabel();
             this.koktelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.TabsTC.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -157,7 +161,7 @@ namespace SemniarPI
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(518, 171);
+            this.pictureBox1.Location = new System.Drawing.Point(519, 167);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(276, 259);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -184,18 +188,18 @@ namespace SemniarPI
             this.metroLabel1.UseStyleColors = true;
             this.metroLabel1.Click += new System.EventHandler(this.metroLabel1_Click);
             // 
-            // metroLabel2
+            // InsctrLB
             // 
-            this.metroLabel2.AutoSize = true;
-            this.metroLabel2.Location = new System.Drawing.Point(592, 473);
-            this.metroLabel2.Name = "metroLabel2";
-            this.metroLabel2.Size = new System.Drawing.Size(122, 80);
-            this.metroLabel2.Style = MetroFramework.MetroColorStyle.White;
-            this.metroLabel2.TabIndex = 4;
-            this.metroLabel2.Text = "1) Prokuhajte vino \r\n2) Dodajte cimet\r\n3) ....\r\n";
-            this.metroLabel2.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroLabel2.UseCustomBackColor = true;
-            this.metroLabel2.UseStyleColors = true;
+            this.InsctrLB.AutoSize = true;
+            this.InsctrLB.Location = new System.Drawing.Point(365, 561);
+            this.InsctrLB.Name = "InsctrLB";
+            this.InsctrLB.Size = new System.Drawing.Size(122, 80);
+            this.InsctrLB.Style = MetroFramework.MetroColorStyle.White;
+            this.InsctrLB.TabIndex = 4;
+            this.InsctrLB.Text = "1) Prokuhajte vino \r\n2) Dodajte cimet\r\n3) ....\r\n";
+            this.InsctrLB.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.InsctrLB.UseCustomBackColor = true;
+            this.InsctrLB.UseStyleColors = true;
             // 
             // SearchboxTB
             // 
@@ -292,8 +296,7 @@ namespace SemniarPI
             // 
             // SearchingPB
             // 
-            this.SearchingPB.ErrorImage = global::SemniarPI.Properties.Resources.searching;
-            this.SearchingPB.Image = global::SemniarPI.Properties.Resources.searching;
+            this.SearchingPB.Image = ((System.Drawing.Image)(resources.GetObject("SearchingPB.Image")));
             this.SearchingPB.Location = new System.Drawing.Point(376, 447);
             this.SearchingPB.Name = "SearchingPB";
             this.SearchingPB.Size = new System.Drawing.Size(23, 23);
@@ -353,10 +356,56 @@ namespace SemniarPI
             this.GridView.TabIndex = 11;
             this.GridView.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.GridView.UseStyleColors = true;
-            this.GridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GridView_CellContentClick);
             this.GridView.SelectionChanged += new System.EventHandler(this.OnSelection);
             this.GridView.DoubleClick += new System.EventHandler(this.OnDoubleClick);
             this.GridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnKeyDown);
+            // 
+            // sviSastTXTLB
+            // 
+            this.sviSastTXTLB.AutoSize = true;
+            this.sviSastTXTLB.Location = new System.Drawing.Point(519, 429);
+            this.sviSastTXTLB.Name = "sviSastTXTLB";
+            this.sviSastTXTLB.Size = new System.Drawing.Size(61, 20);
+            this.sviSastTXTLB.TabIndex = 12;
+            this.sviSastTXTLB.Text = "Sastojci: ";
+            this.sviSastTXTLB.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.sviSastTXTLB.UseStyleColors = true;
+            this.sviSastTXTLB.WrapToLine = true;
+            // 
+            // NedostajeLB
+            // 
+            this.NedostajeLB.AutoSize = true;
+            this.NedostajeLB.Location = new System.Drawing.Point(517, 475);
+            this.NedostajeLB.Name = "NedostajeLB";
+            this.NedostajeLB.Size = new System.Drawing.Size(79, 20);
+            this.NedostajeLB.TabIndex = 13;
+            this.NedostajeLB.Text = "Nedostaje: ";
+            this.NedostajeLB.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.NedostajeLB.UseStyleColors = true;
+            // 
+            // NedSasLB
+            // 
+            this.NedSasLB.ForeColor = System.Drawing.Color.Red;
+            this.NedSasLB.Location = new System.Drawing.Point(590, 475);
+            this.NedSasLB.Name = "NedSasLB";
+            this.NedSasLB.Size = new System.Drawing.Size(205, 41);
+            this.NedSasLB.TabIndex = 14;
+            this.NedSasLB.Text = "a";
+            this.NedSasLB.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.NedSasLB.UseCustomForeColor = true;
+            this.NedSasLB.WrapToLine = true;
+            // 
+            // sastojciLB
+            // 
+            this.sastojciLB.ForeColor = System.Drawing.Color.White;
+            this.sastojciLB.Location = new System.Drawing.Point(586, 429);
+            this.sastojciLB.Name = "sastojciLB";
+            this.sastojciLB.Size = new System.Drawing.Size(221, 46);
+            this.sastojciLB.TabIndex = 15;
+            this.sastojciLB.Text = "a";
+            this.sastojciLB.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.sastojciLB.UseCustomForeColor = true;
+            this.sastojciLB.WrapToLine = true;
             // 
             // koktelBindingSource
             // 
@@ -367,12 +416,16 @@ namespace SemniarPI
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(948, 637);
+            this.Controls.Add(this.sastojciLB);
+            this.Controls.Add(this.NedSasLB);
+            this.Controls.Add(this.NedostajeLB);
+            this.Controls.Add(this.sviSastTXTLB);
             this.Controls.Add(this.GridView);
             this.Controls.Add(this.SearchingPB);
             this.Controls.Add(this.metroLabel4);
             this.Controls.Add(this.SearchFieldSelectorCB);
             this.Controls.Add(this.SearchboxTB);
-            this.Controls.Add(this.metroLabel2);
+            this.Controls.Add(this.InsctrLB);
             this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.TabsTC);
@@ -405,7 +458,7 @@ namespace SemniarPI
         private PictureBox pictureBox1;
         private MetroStyleManager metroStyleManager1;
         private MetroLabel metroLabel1;
-        private MetroLabel metroLabel2;
+        private MetroLabel InsctrLB;
         private MetroComboBox SearchFieldSelectorCB;
         private MetroTextBox SearchboxTB;
         private MetroLabel metroLabel4;
@@ -415,6 +468,10 @@ namespace SemniarPI
         public PictureBox SearchingPB;
         private MetroGrid GridView;
         private BindingSource koktelBindingSource;
+        private MetroLabel NedostajeLB;
+        private MetroLabel sviSastTXTLB;
+        private MetroLabel NedSasLB;
+        private MetroLabel sastojciLB;
     }
 }
 
