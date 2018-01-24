@@ -4,7 +4,9 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Windows.Forms;
+using MetroFramework;
 using MetroFramework.Controls;
 using MetroFramework.Forms;
 
@@ -46,6 +48,7 @@ namespace SemniarPI
         private MainForm()
         {
             InitializeComponent();
+//            SetStyleManager();
         }
 
         public static MainForm GetInstance()
@@ -59,20 +62,11 @@ namespace SemniarPI
         private void Form1_Load(object sender, EventArgs e)
         { //Code below is for testing purposes and will be removed TODO: Remove, duuh
             TabsTC.SizeMode = TabSizeMode.Fixed;
-            this.GridView.RowTemplate.Height = 40;
-            DBaccess.DBconnect(new FileInfo("PIdb.db"));
+            GridView.RowTemplate.Height = 40;
+            if (!File.Exists("PIdb.db") || !DBaccess.DBconnect(new FileInfo("PIdb.db")))
+                DBconDB();
             trackList = new bool[DBaccess.AllSastojci.Count];
             TabSelectionChanged(TabsTC, null);
-            var sastojci = new List<object[]>
-            {
-                new object[] {(long) 1, null, null, null},
-                new object[] {(long) 2, null, null, null},
-                new object[] {(long) 3, null, null, null},
-                new object[] {(long) 4, null, null, null},
-                new object[] {(long) 5, null, null, null},
-                new object[] {(long) 6, null, null, null},
-                new object[] {(long) 7, null, null, null}
-            };
             var st = new DataGridViewCellStyle()
             {
                 WrapMode = DataGridViewTriState.True,
@@ -82,9 +76,52 @@ namespace SemniarPI
             GridView.DefaultCellStyle = st;
             //this.ImeLB.BackColor = Color.Transparent;
         }
+
+        private void DBconDB()
+        {
+            if (MessageBox.Show(null, "Spajanje na bazu nije mouće!\nBaza nije pronađena!\nImate li svoju bazu?",
+                    "Greška s bazom", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+                if (!DBaccess.DBconnect(FindFile()))
+                    DBconDB();
+                return;
+            }
+            if (MessageBox.Show(null, "Želite li skinuti default bazu?",
+                    "Greška s bazom", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                if (!DBaccess.DBconnect(DownloadFile()))
+                {
+                    MessageBox.Show(null, "Neočekivana greška!",
+                        "Well fuck", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                }
+                else
+                {
+                    return;
+                }
+
+            }
+            Application.Exit();
+        }
+
+        private FileInfo DownloadFile()
+        {
+            var wc = new WebClient();
+            wc.DownloadFile("https://github.com/n00ne1mportant/PublicFilesRepo/blob/master/PIdb.db?raw=true", "PI.db");
+            return new FileInfo("PI.db");
+        }
+
+        private FileInfo FindFile()
+        {
+            var fd = new OpenFileDialog();
+            fd.Multiselect = false;
+            fd.Filter = "Database Files (*.db)|*.db|All files (*.*)|*.*";
+            return fd.ShowDialog() == DialogResult.OK ? new FileInfo(fd.FileName) : null;
+        }
+
         private void metroLabel1_Click(object sender, EventArgs e)
         {
             var settings = new SettingsForm();
+            this.StyleManager = SettingsObject.GetSettings().StyleManager;
             settings.Show();
         }
 
@@ -227,38 +264,38 @@ namespace SemniarPI
             {
                 case Tabs.MojiKokteli:
                 case Tabs.SviKokteli:
-                    this.NedSasLB.ForeColor = Color.Red;
+                    NedSasLB.ForeColor = Color.Red;
                     var obj = DBaccess.BindRowToItem(s.SelectedRows[0], Tabs.SviKokteli, pairs:true, link:SelectedTab == Tabs.MojiKokteli);
-                    this.sastojciLB.Text = "";
-                    this.NedSasLB.Text = "";
+                    sastojciLB.Text = "";
+                    NedSasLB.Text = "";
                     var o = (KeyValuePair<Koktel, List<Sastojci>>)obj;
-                    o.Value.ForEach(x => this.sastojciLB.Text += x.Ime.ToString() + ", ");
+                    o.Value.ForEach(x => sastojciLB.Text += x.Ime.ToString() + ", ");
                     sastojciLB.Text = sastojciLB.Text.Remove(sastojciLB.Text.Length - 2);
                     var op = DBaccess.BindRowToItem(s.SelectedRows[0], Tabs.MojiKokteli);
                     pictureBox1.Image = o.Key.Slika;
                     if (op is null)
                     {
-                        this.NedSasLB.Text = sastojciLB.Text.Replace("Sastojci:", "").TrimStart();
+                        NedSasLB.Text = sastojciLB.Text.Replace("Sastojci:", "").TrimStart();
                         return;
                     }
-                    ((KeyValuePair<Koktel,List<Sastojci>>)op).Value.ForEach(x => this.NedSasLB.Text += x.Ime + ", ");
+                    ((KeyValuePair<Koktel,List<Sastojci>>)op).Value.ForEach(x => NedSasLB.Text += x.Ime + ", ");
                     if (((KeyValuePair<Koktel, List<Sastojci>>)op).Value.Count == 0)
                     {
-                        this.NedSasLB.Text = "Imate sve!  ";
-                        this.NedSasLB.ForeColor = Color.LightGreen;
+                        NedSasLB.Text = "Imate sve!  ";
+                        NedSasLB.ForeColor = Color.LightGreen;
                     }
-                    this.NedSasLB.Text = NedSasLB.Text.Remove(NedSasLB.Text.Length - 2);
-                    this.sviSastTXTLB.Show();
-                    this.NedostajeLB.Show();
+                    NedSasLB.Text = NedSasLB.Text.Remove(NedSasLB.Text.Length - 2);
+                    sviSastTXTLB.Show();
+                    NedostajeLB.Show();
                     break;
                 case Tabs.MojiSastojci:
                 case Tabs.SviSastojci:
                     var sas = (Sastojci)DBaccess.BindRowToItem(s.SelectedRows[0], SelectedTab);
-                    this.pictureBox1.Image = sas.Slika;
-                    this.NedSasLB.Text = "";
-                    this.sastojciLB.Text = "";
-                    this.sviSastTXTLB.Hide();
-                    this.NedostajeLB.Hide();
+                    pictureBox1.Image = sas.Slika;
+                    NedSasLB.Text = "";
+                    sastojciLB.Text = "";
+                    sviSastTXTLB.Hide();
+                    NedostajeLB.Hide();
                     break;
             }
         }

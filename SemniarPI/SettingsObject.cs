@@ -1,10 +1,25 @@
 ﻿using System;
 using System.IO;
+using MetroFramework.Components;
 
 namespace SemniarPI
 {
     class SettingsObject
     {
+        private static SettingsObject me;
+        public static SettingsObject GetSettings()
+        {
+            return me is null ? new SettingsObject() : me;
+        }
+
+        private SettingsObject()
+        {
+            StyleManager = new MetroStyleManager();
+            Tolerance = 0;
+        }
+
+        public MetroStyleManager StyleManager;
+        public int Tolerance = 0;
         public event EventHandler ApperenceChanged;
         public event EventHandler LoggingSwitched;
         public event EventHandler DatabaseChanged; //TODO: Implement and use
@@ -17,7 +32,10 @@ namespace SemniarPI
         {
             //TODO: Add all styles
             Blue,
-            Teral
+            Teral,
+            White,
+            Green,
+            Red
         }
 
         private bool _logging;

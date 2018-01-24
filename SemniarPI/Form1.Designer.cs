@@ -232,6 +232,7 @@ namespace SemniarPI
             this.SearchboxTB.Text = "Pretraži";
             this.SearchboxTB.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.SearchboxTB.UseSelectable = true;
+            this.SearchboxTB.UseStyleColors = true;
             this.SearchboxTB.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
             this.SearchboxTB.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
             this.SearchboxTB.TextChanged += new System.EventHandler(this.OnSearchTextChanged);

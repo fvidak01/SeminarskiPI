@@ -8,6 +8,7 @@ namespace SemniarPI
         public SettingsForm()
         {
             InitializeComponent();
+            this.metroComboBox3.SelectedIndex = 0;
         }
 
         private void metroComboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -17,6 +18,11 @@ namespace SemniarPI
         private void LBtheme_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void metroButton2_Click(object sender, EventArgs e)
+        {
+            SettingsObject.GetSettings().Tolerance = this.metroComboBox3.SelectedIndex;
         }
     }
 }

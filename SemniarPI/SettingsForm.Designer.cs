@@ -106,6 +106,7 @@ namespace SemniarPI
             this.metroButton2.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton2.UseSelectable = true;
             this.metroButton2.UseStyleColors = true;
+            this.metroButton2.Click += new System.EventHandler(this.metroButton2_Click);
             // 
             // metroComboBox1
             // 
@@ -180,6 +181,7 @@ namespace SemniarPI
             this.metroComboBox3.FormattingEnabled = true;
             this.metroComboBox3.ItemHeight = 24;
             this.metroComboBox3.Items.AddRange(new object[] {
+            "0",
             "1",
             "2",
             "3"});

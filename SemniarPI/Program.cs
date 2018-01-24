@@ -14,7 +14,7 @@ namespace SemniarPI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            so = new SettingsObject();
+            so = SettingsObject.GetSettings();
             Application.Run(MainForm.GetInstance());
         }
     }

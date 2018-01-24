@@ -117,6 +117,8 @@ namespace SemniarPI
         // open the connection:
         public static bool DBconnect(FileInfo file)
         {
+            if (file is null || file.Length < 10)
+                return false;
             _sqliteConn = new SQLiteConnection("Data Source=" + file.FullName + ";Version=3;");
             try
             {
@@ -205,7 +207,7 @@ namespace SemniarPI
                 if ((thePair = myKoktelSastocjiNumberPairs.FirstOrDefault(x => x[0] == o[0])) == null)
                     continue;
                 //Add to final list
-                if (o[1] - thePair[1] <= Tolerance) //0->Tolerance, in this case 0 TODO: Create <real> tolerance field
+                if (o[1] - thePair[1] <= SettingsObject.GetSettings().Tolerance) //0->Tolerance, in this case 0 TODO: Create <real> tolerance field
                     theChosenOnes.Add(thePair[0]); //Add ID to the list of requested Koktels
             }
             //2.1 Get IDs of Koktels passing the test above (SUB <= Tolerance)
