@@ -6,10 +6,12 @@ namespace SemniarPI
 {
     class SettingsObject
     {
-        private static SettingsObject me;
+        private static SettingsObject me = null;
         public static SettingsObject GetSettings()
         {
-            return me is null ? new SettingsObject() : me;
+            if (me is null)
+                me = new SettingsObject();
+            return me;
         }
 
         private SettingsObject()
@@ -31,11 +33,11 @@ namespace SemniarPI
         public enum FormStyle
         {
             //TODO: Add all styles
-            Blue,
-            Teral,
-            White,
-            Green,
-            Red
+            Blue = 0,
+            Teral = 1,
+            White = 2,
+            Green = 3,
+            Red = 4
         }
 
         private bool _logging;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -48,7 +49,24 @@ namespace SemniarPI
         private MainForm()
         {
             InitializeComponent();
-//            SetStyleManager();
+            this.TabsTC.StyleManager = SettingsObject.GetSettings().StyleManager;
+            this.SearchFieldSelectorCB.StyleManager = SettingsObject.GetSettings().StyleManager;
+            foreach (Control control in this.Controls)
+            {
+                object o;
+                switch (control.GetType().Name.ToLower())
+                {
+                    case "metrolabel":
+                        o = ((MetroLabel)control).StyleManager = SettingsObject.GetSettings().StyleManager;
+                        break;
+                    case "metrogrid":
+                        o = ((MetroGrid)control).StyleManager = SettingsObject.GetSettings().StyleManager;
+                        break;
+                    case "metrobutton":
+                        o = ((MetroButton)control).StyleManager = SettingsObject.GetSettings().StyleManager;
+                        break;
+                }
+            }
         }
 
         public static MainForm GetInstance()
@@ -106,22 +124,22 @@ namespace SemniarPI
         private FileInfo DownloadFile()
         {
             var wc = new WebClient();
-            wc.DownloadFile("https://github.com/n00ne1mportant/PublicFilesRepo/blob/master/PIdb.db?raw=true", "PI.db");
+            wc.DownloadFile("https://github.com/n00ne1mportant/PublicFilesRepo/blob/master/PIdb.db?raw=true", "PIdb.db");
             return new FileInfo("PI.db");
         }
 
-        private FileInfo FindFile()
+        private FileInfo FindFile(string s = null)
         {
             var fd = new OpenFileDialog();
             fd.Multiselect = false;
-            fd.Filter = "Database Files (*.db)|*.db|All files (*.*)|*.*";
+            fd.Filter = s is null ? "Database Files (*.db)|*.db|All files (*.*)|*.*" : "";
             return fd.ShowDialog() == DialogResult.OK ? new FileInfo(fd.FileName) : null;
         }
 
         private void metroLabel1_Click(object sender, EventArgs e)
         {
             var settings = new SettingsForm();
-            this.StyleManager = SettingsObject.GetSettings().StyleManager;
+           // this.StyleManager = SettingsObject.GetSettings().StyleManager;
             settings.Show();
         }
 
@@ -275,7 +293,7 @@ namespace SemniarPI
                     pictureBox1.Image = o.Key.Slika;
                     if (op is null)
                     {
-                        NedSasLB.Text = sastojciLB.Text.Replace("Sastojci:", "").TrimStart();
+                        NedSasLB.Text = SelectedTab == Tabs.SviKokteli ? "" : sastojciLB.Text.Replace("Sastojci:", "").TrimStart();
                         return;
                     }
                     ((KeyValuePair<Koktel,List<Sastojci>>)op).Value.ForEach(x => NedSasLB.Text += x.Ime + ", ");
@@ -370,6 +388,41 @@ namespace SemniarPI
         private void OnDoubleClick(object sender, EventArgs e) //Same as ENTER keypress, shall forward the call
         {
             OnKeyDown(sender, new KeyEventArgs(Keys.Enter));
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var s = Sastojci.Serilize();
+            MessageBox.Show("Podatci spremljeni pod imenom: " + s);
+        }
+
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Sastojci.Deserilize(FindFile("XML files(*.xml) | *.xml | All files(*.*) | *.*)"));
+            MessageBox.Show("Podatci učitani!");
+        }
+
+        public void CheckTheme(int s)
+        {
+            this.GridView.BackgroundColor = this.Theme == MetroThemeStyle.Dark ? Color.Black : Color.White;
+            switch (s)
+            {
+                case (int)SettingsObject.FormStyle.Blue:
+                    this.GridView.DefaultCellStyle.ForeColor = Color.Blue;
+                    break;
+                case (int)SettingsObject.FormStyle.Teral:
+                    this.GridView.DefaultCellStyle.ForeColor = Color.Teal;
+                    break;
+                case (int)SettingsObject.FormStyle.White:
+                    this.GridView.DefaultCellStyle.ForeColor = Color.White;
+                    break;
+                case (int)SettingsObject.FormStyle.Green:
+                    this.GridView.DefaultCellStyle.ForeColor = Color.Green;
+                    break;
+                case (int)SettingsObject.FormStyle.Red:
+                    this.GridView.DefaultCellStyle.ForeColor = Color.Red;
+                    break;
+            }
         }
     }
 }

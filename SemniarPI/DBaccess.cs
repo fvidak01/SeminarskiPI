@@ -212,6 +212,8 @@ namespace SemniarPI
             }
             //2.1 Get IDs of Koktels passing the test above (SUB <= Tolerance)
             var finalListQuery = "";
+            if (theChosenOnes.Count < 1)
+                return null;
             theChosenOnes.ForEach(x => finalListQuery += x.ToString() + ',');
             finalListQuery = finalListQuery.Remove(finalListQuery.Length - 1);
             //3) Use IDs to get Koktels from the DB 
@@ -232,7 +234,7 @@ namespace SemniarPI
 
         public static Dictionary<Koktel, List<Sastojci>> GetMissingSastojciForKoktelList(List<Koktel> myKoktels, List<Sastojci> mySastojcis)
         {
-            if (MySastojcis is null || MySastojcis.Count < 1)
+            if (MySastojcis is null || MySastojcis.Count < 1 ||myKoktels is null)
                 return null;
             string listQuery = "";
             mySastojcis.ForEach(x => listQuery += x.Id.ToString() + ",");
@@ -271,7 +273,6 @@ namespace SemniarPI
                 _searchDelayTimer.Tick += TickMethod;
                 _setup = !_setup;
             }
-            //TODO: Check semaphore's work
             if (_searchRunningSemaphore)
             {
                 if (_searchDelayTimer.Enabled)
@@ -292,7 +293,7 @@ namespace SemniarPI
             switch (tab)
             {
                 case MainForm.Tabs.MojiKokteli:
-                    if (MyKoktels is null)
+                    if (MyKoktels is null || row.Index >= MyKoktels.Count)
                         return null;
                     return MyKoktels.ElementAt(row.Index);
                 case MainForm.Tabs.SviKokteli:

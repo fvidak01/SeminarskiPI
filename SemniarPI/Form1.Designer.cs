@@ -59,14 +59,12 @@ namespace SemniarPI
             this.NedostajeLB = new MetroFramework.Controls.MetroLabel();
             this.NedSasLB = new MetroFramework.Controls.MetroLabel();
             this.sastojciLB = new MetroFramework.Controls.MetroLabel();
-            this.koktelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.TabsTC.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
             this.metroContextMenu1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SearchingPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.koktelBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // TabsTC
@@ -288,12 +286,14 @@ namespace SemniarPI
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(125, 24);
             this.saveToolStripMenuItem.Text = "Spremi";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
             this.loadToolStripMenuItem.Size = new System.Drawing.Size(125, 24);
             this.loadToolStripMenuItem.Text = "Učitaj";
+            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // SearchingPB
             // 
@@ -356,7 +356,7 @@ namespace SemniarPI
             this.GridView.Size = new System.Drawing.Size(342, 259);
             this.GridView.TabIndex = 11;
             this.GridView.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.GridView.UseStyleColors = true;
+            this.GridView.UseCustomBackColor = true;
             this.GridView.SelectionChanged += new System.EventHandler(this.OnSelection);
             this.GridView.DoubleClick += new System.EventHandler(this.OnDoubleClick);
             this.GridView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnKeyDown);
@@ -408,10 +408,6 @@ namespace SemniarPI
             this.sastojciLB.UseCustomForeColor = true;
             this.sastojciLB.WrapToLine = true;
             // 
-            // koktelBindingSource
-            // 
-            this.koktelBindingSource.DataSource = typeof(SemniarPI.Koktel);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -443,7 +439,6 @@ namespace SemniarPI
             this.metroContextMenu1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SearchingPB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.koktelBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -468,7 +463,6 @@ namespace SemniarPI
         private ToolStripMenuItem loadToolStripMenuItem;
         public PictureBox SearchingPB;
         private MetroGrid GridView;
-        private BindingSource koktelBindingSource;
         private MetroLabel NedostajeLB;
         private MetroLabel sviSastTXTLB;
         private MetroLabel NedSasLB;
